@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veyor — The B2B Procurement Exchange</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0D1B2E;
+  --ink-2:#16283F;
+  --ink-3:#1F3A5A;
+  --paper:#F3F5F7;
+  --paper-2:#FFFFFF;
+  --steel:#57626F;
+  --steel-line:#DDE3E8;
+  --steel-line-2:#E9ECEF;
+  --text:#141E2B;
+  --signal:#FF6A2C;
+  --signal-dark:#E2551B;
+  --ai:#0EA5A0;
+  --ai-dark:#0B837E;
+  --verified:#1B8A5A;
+  --verified-bg:#E6F4EC;
+  --warn:#B9790A;
+  --warn-bg:#FBF0DC;
+  --danger:#C0392B;
+  --radius:10px;
+  --radius-lg:16px;
+  --shadow-sm:0 1px 2px rgba(13,27,46,0.06), 0 1px 1px rgba(13,27,46,0.04);
+  --shadow-md:0 8px 24px rgba(13,27,46,0.10);
+  --shadow-lg:0 24px 60px rgba(13,27,46,0.20);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'IBM Plex Sans', sans-serif;
+  color:var(--text);
+  background:var(--paper);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.display{
+  font-family:'Oswald', sans-serif;
+  letter-spacing:0.01em;
+  margin:0;
+  color:var(--ink);
+  text-transform:uppercase;
+}
+.mono{font-family:'IBM Plex Mono', monospace;}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer;}
+img{max-width:100%; display:block;}
+.container{max-width:1240px; margin:0 auto; padding:0 24px;}
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--signal);
+  font-weight:600;
+  display:flex; align-items:center; gap:8px;
+}
+.eyebrow::before{content:''; width:16px; height:1.5px; background:var(--signal); display:inline-block;}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:13px 22px; border-radius:8px; border:1.5px solid transparent;
+  font-weight:600; font-size:14.5px; font-family:'IBM Plex Sans',sans-serif;
+  transition:all .15s ease; white-space:nowrap;
+}
+.btn-primary{background:var(--signal); color:#fff;}
+.btn-primary:hover{background:var(--signal-dark); transform:translateY(-1px);}
+.btn-dark{background:var(--ink); color:#fff;}
+.btn-dark:hover{background:var(--ink-2);}
+.btn-ghost{background:transparent; color:var(--ink); border-color:var(--steel-line);}
+.btn-ghost:hover{border-color:var(--ink); background:#fff;}
+.btn-ai{background:var(--ai); color:#fff;}
+.btn-ai:hover{background:var(--ai-dark);}
+.btn-sm{padding:8px 14px; font-size:13px; border-radius:6px;}
+.btn-block{width:100%;}
+.btn:disabled{opacity:.55; cursor:not-allowed; transform:none;}
+
+/* ---------- NAV ---------- */
+header.topnav{
+  position:sticky; top:0; z-index:200; background:var(--ink);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.nav-inner{
+  display:flex; align-items:center; gap:28px; height:68px;
+}
+.brand{display:flex; align-items:center; gap:10px; color:#fff; flex-shrink:0;}
+.brand-mark{
+  width:32px; height:32px; border-radius:7px; background:var(--signal);
+  display:flex; align-items:center; justify-content:center; font-family:'Oswald';
+  font-weight:700; color:#fff; font-size:16px;
+}
+.brand-name{font-family:'Oswald'; font-size:20px; font-weight:600; letter-spacing:0.02em; color:#fff; text-transform:uppercase;}
+.brand-name span{color:var(--signal);}
+.nav-links{display:flex; align-items:center; gap:4px; flex:1;}
+.nav-links a{
+  color:rgba(255,255,255,0.72); font-size:14.5px; font-weight:500; padding:10px 14px;
+  border-radius:7px; transition:all .15s;
+}
+.nav-links a:hover, .nav-links a.active{color:#fff; background:rgba(255,255,255,0.08);}
+.nav-right{display:flex; align-items:center; gap:10px; flex-shrink:0;}
+.nav-role-pill{
+  display:flex; align-items:center; gap:6px; color:rgba(255,255,255,0.65); font-size:13px;
+  padding:7px 12px; border:1px solid rgba(255,255,255,0.15); border-radius:20px;
+}
+.nav-role-pill b{color:#fff;}
+.icon-btn{
+  width:38px; height:38px; border-radius:8px; background:rgba(255,255,255,0.06); border:none;
+  color:#fff; display:flex; align-items:center; justify-content:center; position:relative;
+}
+.icon-btn:hover{background:rgba(255,255,255,0.14);}
+.badge-dot{
+  position:absolute; top:-3px; right:-3px; width:16px; height:16px; background:var(--signal);
+  border-radius:50%; font-size:9.5px; display:flex; align-items:center; justify-content:center; font-weight:700;
+  border:2px solid var(--ink);
+}
+.hamburger{display:none; background:none; border:none; color:#fff;}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:radial-gradient(1100px 500px at 82% -10%, #16283F 0%, var(--ink) 55%);
+  color:#fff; padding:64px 0 0;
+  position:relative; overflow:hidden;
+}
+.hero-grid{
+  display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center;
+  padding-bottom:56px;
+}
+.hero h1{
+  color:#fff; font-size:52px; line-height:1.05; margin:18px 0 20px; font-weight:600;
+}
+.hero h1 em{font-style:normal; color:var(--signal);}
+.hero p.lede{
+  font-family:'IBM Plex Sans'; font-size:17px; line-height:1.6; color:rgba(255,255,255,0.72);
+  max-width:520px; margin-bottom:30px; text-transform:none;
+}
+.search-bar{
+  display:flex; background:#fff; border-radius:10px; padding:6px; box-shadow:var(--shadow-lg); max-width:560px;
+}
+.search-bar input{
+  flex:1; border:none; outline:none; padding:12px 14px; font-size:14.5px; font-family:'IBM Plex Sans'; color:var(--text); background:transparent;
+}
+.search-bar button{
+  background:var(--signal); color:#fff; border:none; padding:0 22px; border-radius:7px; font-weight:600; font-size:14px;
+}
+.search-hint{margin-top:10px; font-size:12.5px; color:rgba(255,255,255,0.45); font-family:'IBM Plex Mono';}
+.hero-ctas{display:flex; gap:12px; margin-top:26px;}
+
+.hero-visual{
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:22px;
+  backdrop-filter:blur(6px);
+}
+.hv-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+.hv-head span.tag{font-family:'IBM Plex Mono'; font-size:11px; color:var(--ai); letter-spacing:.08em;}
+.live-dot{width:7px; height:7px; border-radius:50%; background:#3EDB8F; display:inline-block; animation:pulse 1.4s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(62,219,143,.6);}70%{box-shadow:0 0 0 7px rgba(62,219,143,0);}100%{box-shadow:0 0 0 0 rgba(62,219,143,0);}}
+.rfq-feed-item{
+  display:flex; gap:10px; padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.08); font-size:13px;
+}
+.rfq-feed-item:last-child{border-bottom:none;}
+.rfq-feed-item .dot{width:6px; height:6px; border-radius:50%; margin-top:6px; flex-shrink:0;}
+.rfq-feed-item .rt{color:rgba(255,255,255,0.5); font-family:'IBM Plex Mono'; font-size:11px; white-space:nowrap;}
+.rfq-feed-item .body{flex:1;}
+.rfq-feed-item .body b{color:#fff; font-weight:500;}
+.rfq-feed-item .body .meta{color:rgba(255,255,255,0.5); font-size:12px;}
+
+/* ticker */
+.ticker-wrap{background:var(--ink-2); border-top:1px solid rgba(255,255,255,0.08); overflow:hidden; padding:12px 0;}
+.ticker-label{
+  display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono'; font-size:11px; color:#fff;
+  letter-spacing:.1em; padding:0 24px; flex-shrink:0; text-transform:uppercase;
+}
+.ticker-outer{display:flex; align-items:center;}
+.ticker-track{display:flex; gap:44px; white-space:nowrap; animation:tickerscroll 38s linear infinite;}
+.ticker-track span{font-family:'IBM Plex Mono'; font-size:12.5px; color:rgba(255,255,255,0.7);}
+.ticker-track span b{color:#fff; font-weight:500;}
+
+.market-pulse-wrap{background:var(--ink); border-top:1px solid rgba(255,255,255,0.06);}
+.market-pulse{display:flex; align-items:center; gap:22px; padding:14px 24px; flex-wrap:wrap;}
+.mp-label{font-size:11px; color:rgba(255,255,255,0.55); letter-spacing:.1em; display:flex; align-items:center; gap:6px; flex-shrink:0;}
+.mp-cards{display:flex; gap:22px; flex-wrap:wrap; flex:1;}
+.mp-card{display:flex; align-items:baseline; gap:7px; font-family:'IBM Plex Mono'; font-size:13px;}
+.mp-card .mp-name{color:rgba(255,255,255,0.55);}
+.mp-card .mp-val{color:#fff; font-weight:600;}
+.mp-card .mp-chg{font-size:11.5px;}
+.mp-card .mp-chg.up{color:#3EDB8F;}
+.mp-card .mp-chg.down{color:#FF6A6A;}
+.mp-source{font-size:10.5px; color:rgba(255,255,255,0.35); flex-shrink:0; white-space:nowrap;}
+@media (max-width:860px){.market-pulse{flex-direction:column; align-items:flex-start; gap:10px;} .mp-source{white-space:normal;}}
+@keyframes tickerscroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+
+/* ---------- SECTIONS ---------- */
+section{padding:76px 0;}
+.section-head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:36px; gap:24px; flex-wrap:wrap;}
+.section-head h2{font-size:34px; margin-top:10px;}
+.section-head p{color:var(--steel); font-size:15px; max-width:480px; text-transform:none; font-family:'IBM Plex Sans'; margin-top:8px;}
+
+/* stat strip */
+.stat-strip{background:var(--ink); padding:0;}
+.stat-strip .container{display:grid; grid-template-columns:repeat(4,1fr); }
+.stat{padding:26px 24px; border-right:1px solid rgba(255,255,255,0.08);}
+.stat:last-child{border-right:none;}
+.stat .num{font-family:'IBM Plex Mono'; font-size:26px; color:#fff; font-weight:600;}
+.stat .lab{font-family:'IBM Plex Mono'; font-size:11.5px; color:rgba(255,255,255,0.5); margin-top:4px; text-transform:uppercase; letter-spacing:.04em;}
+
+/* categories */
+.cat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.cat-card{
+  background:var(--paper-2); border:1px solid var(--steel-line-2); border-radius:var(--radius-lg);
+  padding:22px; display:flex; gap:16px; align-items:flex-start; transition:all .15s;
+}
+.cat-card:hover{border-color:var(--ink); box-shadow:var(--shadow-md); transform:translateY(-2px);}
+.cat-icon{
+  width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.cat-icon svg{width:24px; height:24px; stroke:#fff; fill:none; stroke-width:1.6;}
+.cat-card h3{font-size:16.5px; margin-bottom:4px; text-transform:none; font-family:'IBM Plex Sans'; font-weight:600;}
+.cat-card .count{font-family:'IBM Plex Mono'; font-size:12px; color:var(--steel);}
+
+/* product / listing cards */
+.grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+.grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+.listing-card{
+  background:var(--paper-2); border:1px solid var(--steel-line-2); border-radius:var(--radius-lg); overflow:hidden;
+  display:flex; flex-direction:column; transition:all .15s; cursor:pointer;
+}
+.listing-card:hover{box-shadow:var(--shadow-md); border-color:var(--ink); transform:translateY(-2px);}
+.listing-thumb{
+  height:130px; display:flex; align-items:center; justify-content:center; position:relative;
+}
+.listing-thumb svg{width:42px; height:42px; stroke:#fff; fill:none; stroke-width:1.4;}
+.verified-chip{
+  position:absolute; top:10px; left:10px; background:var(--verified-bg); color:var(--verified);
+  font-size:10.5px; font-weight:700; padding:4px 8px; border-radius:5px; font-family:'IBM Plex Mono';
+  display:flex; align-items:center; gap:4px; text-transform:uppercase;
+}
+.listing-body{padding:16px 16px 18px; display:flex; flex-direction:column; gap:8px; flex:1;}
+.listing-cat{font-family:'IBM Plex Mono'; font-size:10.5px; color:var(--steel); text-transform:uppercase; letter-spacing:.05em;}
+.listing-title{font-size:15px; font-weight:600; line-height:1.35; text-transform:none; font-family:'IBM Plex Sans'; color:var(--ink);}
+.listing-supplier{font-size:12.5px; color:var(--steel); display:flex; align-items:center; gap:6px;}
+.listing-specs{display:flex; gap:14px; margin-top:4px; padding-top:10px; border-top:1px dashed var(--steel-line);}
+.listing-specs .sp{font-family:'IBM Plex Mono'; font-size:11px; color:var(--steel);}
+.listing-specs .sp b{display:block; color:var(--ink); font-size:13px; font-weight:600;}
+.listing-price{font-family:'IBM Plex Mono'; font-weight:600; color:var(--ink); font-size:15px; margin-top:2px;}
+.listing-price span{color:var(--steel); font-weight:400; font-size:11px;}
+.stars{color:#E8A33D; font-size:12px; letter-spacing:1px;}
+
+/* how it works */
+.steps{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+.step{background:var(--paper-2); border:1px solid var(--steel-line-2); border-radius:var(--radius-lg); padding:24px;}
+.step .stepnum{font-family:'IBM Plex Mono'; color:var(--signal); font-size:13px; font-weight:700;}
+.step h3{font-size:16px; margin:12px 0 8px; text-transform:none; font-family:'IBM Plex Sans';}
+.step p{font-size:13.5px; color:var(--steel); line-height:1.55; text-transform:none; font-family:'IBM Plex Sans';}
+
+/* AI highlight */
+.ai-panel-cta{
+  background:linear-gradient(135deg, #0D2B2A 0%, var(--ink) 65%); border-radius:var(--radius-lg);
+  padding:44px; color:#fff; display:grid; grid-template-columns:1.2fr 1fr; gap:36px; align-items:center;
+}
+.ai-panel-cta h2{color:#fff;}
+.ai-panel-cta p{color:rgba(255,255,255,0.7); font-size:15px; line-height:1.6; text-transform:none; font-family:'IBM Plex Sans'; margin:14px 0 22px;}
+.ai-feature-list{display:flex; flex-direction:column; gap:10px;}
+.ai-feature-list li{list-style:none; display:flex; gap:10px; font-size:13.5px; color:rgba(255,255,255,0.85); align-items:flex-start;}
+.ai-feature-list li .chk{color:var(--ai); font-weight:700;}
+.ai-mock-chat{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:18px;}
+.ai-mock-chat .bubble{background:rgba(255,255,255,0.08); border-radius:9px; padding:11px 13px; font-size:13px; margin-bottom:10px; color:rgba(255,255,255,0.85); line-height:1.5;}
+.ai-mock-chat .bubble.me{background:var(--ai); color:#fff; margin-left:30px;}
+
+/* pricing */
+.pricing-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+.plan{background:var(--paper-2); border:1px solid var(--steel-line-2); border-radius:var(--radius-lg); padding:26px; display:flex; flex-direction:column;}
+.plan.featured{border:2px solid var(--signal); box-shadow:var(--shadow-md); position:relative;}
+.plan.featured::before{content:'MOST POPULAR'; position:absolute; top:-11px; left:24px; background:var(--signal); color:#fff; font-family:'IBM Plex Mono'; font-size:10px; padding:3px 9px; border-radius:4px; letter-spacing:.05em;}
+.plan .plan-name{font-family:'IBM Plex Mono'; font-size:11.5px; letter-spacing:.08em; color:var(--steel); text-transform:uppercase;}
+.plan .plan-price{font-family:'Oswald'; font-size:32px; color:var(--ink); margin:8px 0 2px;}
+.plan .plan-price span{font-size:13px; color:var(--steel); font-family:'IBM Plex Sans'; text-transform:none;}
+.plan .plan-sub{font-size:12.5px; color:var(--steel); margin-bottom:18px; min-height:32px;}
+.plan ul{list-style:none; padding:0; margin:0 0 22px; display:flex; flex-direction:column; gap:9px; flex:1;}
+.plan li{font-size:13px; color:var(--text); display:flex; gap:8px; align-items:flex-start;}
+.plan li::before{content:'—'; color:var(--signal); flex-shrink:0;}
+
+.revenue-note{
+  margin-top:28px; padding:18px 22px; background:#fff; border:1px dashed var(--steel-line); border-radius:10px;
+  font-size:13px; color:var(--steel); line-height:1.6; text-transform:none; font-family:'IBM Plex Sans';
+}
+.revenue-note b{color:var(--ink);}
+
+/* seller pitch */
+.seller-pitch{display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;}
+.seller-pitch ul{list-style:none; padding:0; margin:20px 0 26px; display:flex; flex-direction:column; gap:14px;}
+.seller-pitch li{display:flex; gap:12px; align-items:flex-start;}
+.seller-pitch li .num{font-family:'IBM Plex Mono'; color:var(--signal); font-weight:700; font-size:13px; flex-shrink:0; width:22px;}
+.seller-pitch li div b{display:block; font-size:14.5px; margin-bottom:2px;}
+.seller-pitch li div span{font-size:13px; color:var(--steel);}
+.seller-visual{background:var(--paper-2); border:1px solid var(--steel-line-2); border-radius:var(--radius-lg); padding:20px;}
+
+footer{background:var(--ink); color:rgba(255,255,255,0.6); padding:56px 0 26px; margin-top:40px;}
+.footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr 1.2fr; gap:32px; padding-bottom:36px; border-bottom:1px solid rgba(255,255,255,0.08);}
+.footer-grid h4{color:#fff; font-size:13px; margin-bottom:14px; text-transform:uppercase; letter-spacing:.06em;}
+.footer-grid a{display:block; font-size:13.5px; color:rgba(255,255,255,0.55); margin-bottom:9px;}
+.footer-grid a:hover{color:#fff;}
+.footer-bottom{display:flex; justify-content:space-between; align-items:center; padding-top:22px; font-size:12px; flex-wrap:wrap; gap:10px;}
+.footer-disclaimer{font-size:11.5px; color:rgba(255,255,255,0.35); max-width:640px; line-height:1.5;}
+
+/* ---------- VIEWS (SPA) ---------- */
+.view{display:none;}
+.view.active{display:block;}
+
+/* marketplace */
+.mp-layout{display:grid; grid-template-columns:250px 1fr; gap:28px; align-items:start;}
+.filters{background:var(--paper-2); border:1px solid var(--steel-line-2); border-radius:var(--radius-lg); padding:20px; position:sticky; top:88px;}
+.filters h4{font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--steel); margin:0 0 12px; font-family:'IBM Plex Mono';}
+.filter-group{margin-bottom:22px;}
+.filter-group label{display:flex; align-items:center; gap:8px; font-size:13.5px; margin-bottom:9px; color:var(--text); cursor:pointer;}
+.filter-group input[type=checkbox], .filter-group input[type=radio]{accent-color:var(--signal);}
+.filter-group input[type=range]{width:100%; accent-color:var(--signal);}
+.toolbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:16px; flex-wrap:wrap;}
+.toolbar .results-count{font-size:14px; color:var(--steel);}
+.toolbar select, .toolbar input[type=text]{
+  padding:9px 12px; border:1px solid var(--steel-line); border-radius:7px; font-size:13.5px; font-family:'IBM Plex Sans'; background:#fff;
+}
+.page-head{padding:32px 0 8px;}
+.page-head .eyebrow{margin-bottom:8px;}
+.page-head h1{font-size:32px;}
+
+/* dashboards */
+.dash-tabs{display:flex; gap:6px; border-bottom:1px solid var(--steel-line); margin-bottom:26px;}
+.dash-tab{padding:12px 18px; font-size:14px; font-weight:500; color:var(--steel); border-bottom:2px solid transparent; margin-bottom:-1px;}
+.dash-tab.active{color:var(--ink); border-color:var(--signal); font-weight:600;}
+.dash-tab-panel{display:none;}
+.dash-tab-panel.active{display:block;}
+.card{background:var(--paper-2); border:1px solid var(--steel-line-2); border-radius:var(--radius-lg); padding:22px;}
+table.dtable{width:100%; border-collapse:collapse;}
+table.dtable th{
+  text-align:left; font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--steel); padding:0 12px 12px; border-bottom:1px solid var(--steel-line);
+}
+table.dtable td{padding:14px 12px; border-bottom:1px solid var(--steel-line-2); font-size:13.5px; vertical-align:middle;}
+table.dtable tr:last-child td{border-bottom:none;}
+.status-pill{padding:4px 10px; border-radius:20px; font-size:11px; font-weight:600; font-family:'IBM Plex Mono'; text-transform:uppercase;}
+.status-open{background:#E6F0FB; color:#1D5FA8;}
+.status-quoted{background:var(--warn-bg); color:var(--warn);}
+.status-closed{background:#EDEDED; color:#666;}
+.status-delivered{background:var(--verified-bg); color:var(--verified);}
+.status-shipped{background:#E6F0FB; color:#1D5FA8;}
+.kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px;}
+.kpi{background:var(--paper-2); border:1px solid var(--steel-line-2); border-radius:12px; padding:18px;}
+.kpi .k-label{font-family:'IBM Plex Mono'; font-size:11px; color:var(--steel); text-transform:uppercase;}
+.kpi .k-val{font-family:'Oswald'; font-size:26px; color:var(--ink); margin-top:6px;}
+.kpi .k-delta{font-size:12px; color:var(--verified); margin-top:2px;}
+.bars{display:flex; align-items:flex-end; gap:10px; height:150px; margin-top:14px;}
+.bars .bar{flex:1; background:linear-gradient(180deg, var(--ai), var(--ai-dark)); border-radius:4px 4px 0 0; position:relative;}
+.bars .bar span{position:absolute; bottom:-20px; left:0; right:0; text-align:center; font-family:'IBM Plex Mono'; font-size:10px; color:var(--steel);}
+.compare-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.quote-card{background:var(--paper-2); border:1px solid var(--steel-line-2); border-radius:12px; padding:18px;}
+.quote-card.best{border:2px solid var(--verified);}
+.quote-card .qbadge{font-size:10.5px; font-family:'IBM Plex Mono'; color:var(--verified); font-weight:700; margin-bottom:8px; text-transform:uppercase;}
+.quote-card .qprice{font-family:'Oswald'; font-size:24px; color:var(--ink);}
+.quote-row{display:flex; justify-content:space-between; font-size:12.5px; color:var(--steel); padding:6px 0; border-bottom:1px solid var(--steel-line-2);}
+.empty-state{text-align:center; padding:50px 20px; color:var(--steel);}
+.empty-state h3{font-size:16px; color:var(--ink); margin-bottom:6px; text-transform:none; font-family:'IBM Plex Sans';}
+
+/* modal */
+.overlay{position:fixed; inset:0; background:rgba(13,27,46,0.55); z-index:900; display:none; align-items:flex-start; justify-content:center; padding:40px 20px; overflow-y:auto;}
+.overlay.active{display:flex;}
+.modal{background:#fff; border-radius:var(--radius-lg); width:100%; max-width:640px; box-shadow:var(--shadow-lg); animation:modalin .18s ease; max-height:90vh; overflow-y:auto;}
+.modal.wide{max-width:820px;}
+@keyframes modalin{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+.modal-head{display:flex; justify-content:space-between; align-items:center; padding:20px 24px; border-bottom:1px solid var(--steel-line-2);}
+.modal-head h3{font-size:18px; text-transform:none; font-family:'IBM Plex Sans'; font-weight:600;}
+.modal-close{background:none; border:none; font-size:20px; color:var(--steel); width:32px; height:32px; border-radius:8px;}
+.modal-close:hover{background:var(--paper);}
+.modal-body{padding:24px;}
+.form-row{margin-bottom:16px;}
+.form-row label{display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;}
+.form-row input, .form-row select, .form-row textarea{
+  width:100%; padding:11px 13px; border:1px solid var(--steel-line); border-radius:8px; font-size:14px; font-family:'IBM Plex Sans'; background:var(--paper);
+}
+.form-row textarea{resize:vertical; min-height:80px;}
+.form-grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.hint{font-size:12px; color:var(--steel); margin-top:5px;}
+
+/* toast */
+.toast-wrap{position:fixed; bottom:24px; left:24px; z-index:1200; display:flex; flex-direction:column; gap:10px;}
+.toast{background:var(--ink); color:#fff; padding:14px 18px; border-radius:9px; font-size:13.5px; box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:10px; animation:toastin .2s ease; max-width:340px;}
+.toast .tdot{width:8px; height:8px; border-radius:50%; background:var(--verified); flex-shrink:0;}
+@keyframes toastin{from{opacity:0; transform:translateX(-14px);} to{opacity:1; transform:translateX(0);}}
+
+/* AI copilot panel */
+.ai-fab{
+  position:fixed; bottom:24px; right:24px; z-index:850; background:var(--ai); color:#fff; border:none;
+  width:58px; height:58px; border-radius:50%; box-shadow:var(--shadow-lg); display:flex; align-items:center; justify-content:center;
+}
+.ai-fab:hover{background:var(--ai-dark); transform:scale(1.05);}
+.ai-fab svg{width:26px; height:26px; stroke:#fff; fill:none; stroke-width:1.6;}
+.ai-drawer{
+  position:fixed; top:0; right:-420px; width:400px; height:100%; background:#fff; z-index:950; box-shadow:-8px 0 40px rgba(0,0,0,0.2);
+  display:flex; flex-direction:column; transition:right .25s ease;
+}
+.ai-drawer.open{right:0;}
+.ai-drawer-head{background:var(--ink); color:#fff; padding:18px 20px; display:flex; justify-content:space-between; align-items:center;}
+.ai-drawer-head .h-title{display:flex; align-items:center; gap:10px; font-size:15px; font-weight:600;}
+.ai-drawer-head .h-title .ico{width:30px; height:30px; background:var(--ai); border-radius:8px; display:flex; align-items:center; justify-content:center;}
+.ai-messages{flex:1; overflow-y:auto; padding:18px 20px; display:flex; flex-direction:column; gap:14px;}
+.ai-msg{max-width:88%; font-size:13.5px; line-height:1.55; padding:11px 14px; border-radius:11px;}
+.ai-msg.bot{background:var(--paper); color:var(--text); align-self:flex-start; border:1px solid var(--steel-line-2);}
+.ai-msg.user{background:var(--ai); color:#fff; align-self:flex-end;}
+.ai-msg.bot p{margin:0 0 8px;}
+.ai-msg.bot p:last-child{margin-bottom:0;}
+.ai-chips{display:flex; flex-wrap:wrap; gap:8px; padding:0 20px 14px;}
+.ai-chip{background:var(--paper); border:1px solid var(--steel-line); font-size:12px; padding:7px 11px; border-radius:20px; color:var(--ink);}
+.ai-chip:hover{border-color:var(--ai); color:var(--ai-dark);}
+.ai-input-row{display:flex; gap:8px; padding:14px 16px; border-top:1px solid var(--steel-line-2);}
+.ai-input-row input{flex:1; border:1px solid var(--steel-line); border-radius:20px; padding:11px 16px; font-size:13.5px; outline:none;}
+.ai-input-row button{width:42px; height:42px; border-radius:50%; background:var(--ai); border:none; color:#fff; flex-shrink:0; display:flex; align-items:center; justify-content:center;}
+.ai-input-row button:hover{background:var(--ai-dark);}
+.typing-dots span{display:inline-block; width:5px; height:5px; background:var(--steel); border-radius:50%; margin-right:3px; animation:blink 1.2s infinite;}
+.typing-dots span:nth-child(2){animation-delay:.2s;} .typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.25;} 40%{opacity:1;}}
+.scrim{position:fixed; inset:0; background:rgba(13,27,46,0.3); z-index:940; display:none;}
+.scrim.active{display:block;}
+
+.demo-banner{background:var(--warn-bg); color:#7A5209; text-align:center; padding:9px 16px; font-size:12.5px; font-family:'IBM Plex Sans';}
+.demo-banner b{font-weight:700;}
+
+/* ---------- AI SOURCING ENGINE ---------- */
+.match-section{background:var(--ink); color:#fff;}
+.match-section .section-head p{color:rgba(255,255,255,0.55);}
+.match-section .eyebrow{color:var(--ai);}
+.match-section .eyebrow::before{background:var(--ai);}
+.match-section h2{color:#fff;}
+.match-engine-grid{display:grid; grid-template-columns:0.95fr 1.05fr; gap:32px; align-items:start;}
+.match-controls{background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-lg); padding:22px;}
+.match-controls label{display:block; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,0.5); margin:14px 0 6px; font-family:'IBM Plex Mono';}
+.match-controls label:first-child{margin-top:0;}
+.match-controls select, .match-controls input[type=text]{
+  width:100%; padding:11px 13px; border-radius:8px; border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.06); color:#fff; font-size:14px; font-family:'IBM Plex Sans';
+}
+.match-controls select option{color:#111;}
+.match-log{
+  margin-top:16px; background:rgba(0,0,0,0.28); border:1px solid rgba(255,255,255,0.08); border-radius:8px;
+  padding:14px 16px; height:150px; overflow-y:auto; font-family:'IBM Plex Mono'; font-size:12px; line-height:1.9;
+}
+.match-log .logline{color:rgba(255,255,255,0.55); opacity:0; animation:logfade .3s ease forwards;}
+.match-log .logline b{color:var(--ai);}
+.match-log .logline.warn b{color:var(--signal);}
+@keyframes logfade{from{opacity:0; transform:translateY(3px);} to{opacity:1; transform:translateY(0);}}
+.radar-card{background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-lg); padding:22px; display:flex; flex-direction:column; align-items:center;}
+.radar-legend{display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:6px; margin-bottom:6px;}
+.radar-legend span{font-family:'IBM Plex Mono'; font-size:11px; color:rgba(255,255,255,0.55); display:flex; align-items:center; gap:6px;}
+.radar-legend .lg-dot{width:8px; height:8px; border-radius:50%; display:inline-block;}
+.match-results{margin-top:22px; display:flex; flex-direction:column; gap:12px;}
+.match-result-card{background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:16px 18px;}
+.match-result-card.winner{border:1.5px solid var(--signal); background:rgba(255,106,44,0.08);}
+.mr-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;}
+.mr-name{font-size:14.5px; font-weight:600; color:#fff;}
+.mr-tier{font-family:'IBM Plex Mono'; font-size:10.5px; color:rgba(255,255,255,0.5); text-transform:uppercase;}
+.mr-score{font-family:'Oswald'; font-size:20px; color:var(--ai);}
+.match-result-card.winner .mr-score{color:var(--signal);}
+.mr-reason{font-size:12px; color:rgba(255,255,255,0.55); margin-bottom:10px; font-style:italic;}
+.mr-bars{display:grid; grid-template-columns:repeat(5,1fr); gap:8px;}
+.score-bar{display:flex; flex-direction:column; gap:4px;}
+.score-bar .sb-label{font-family:'IBM Plex Mono'; font-size:9px; color:rgba(255,255,255,0.4); text-transform:uppercase;}
+.score-bar .sb-track{height:5px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;}
+.score-bar .sb-fill{height:100%; background:var(--ai); border-radius:3px;}
+.match-result-card.winner .sb-fill{background:var(--signal);}
+.winner-tag{background:var(--signal); color:#fff; font-family:'IBM Plex Mono'; font-size:9.5px; padding:2px 7px; border-radius:4px; margin-left:8px; text-transform:uppercase; vertical-align:middle;}
+
+@media (max-width:980px){
+  .match-engine-grid{grid-template-columns:1fr;}
+  .hero-grid{grid-template-columns:1fr;}
+  .steps, .grid-4, .pricing-grid, .cat-grid{grid-template-columns:repeat(2,1fr);}
+  .stat-strip .container{grid-template-columns:repeat(2,1fr);}
+  .stat{border-right:none; border-bottom:1px solid rgba(255,255,255,0.08);}
+  .mp-layout{grid-template-columns:1fr;}
+  .filters{position:static;}
+  .footer-grid{grid-template-columns:repeat(2,1fr);}
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .seller-pitch{grid-template-columns:1fr;}
+  .ai-drawer{width:100%; right:-100%;}
+  .kpi-row{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:600px){
+  .hero h1{font-size:34px;}
+  .grid-4, .grid-3, .pricing-grid, .cat-grid, .compare-grid{grid-template-columns:1fr;}
+  .form-grid-2{grid-template-columns:1fr;}
+}
+@media (prefers-reduced-motion: reduce){
+  .ticker-track{animation:none;}
+  .live-dot{animation:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ICON SPRITE -->
+<svg style="display:none">
+  <symbol id="i-ingot" viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="4"/><rect x="4" y="10" width="16" height="4"/><rect x="2" y="16" width="20" height="4"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 3v3M12 18v3M21 12h-3M6 12H3M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M18.4 18.4l-2.1-2.1M7.7 7.7 5.6 5.6"/></symbol>
+  <symbol id="i-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9.5A2 2 0 0 0 6.7 21h10.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M8 15h8"/></symbol>
+  <symbol id="i-crane" viewBox="0 0 24 24"><path d="M4 21V6l14 4M18 10v11M12 21v-6M9 21v-4"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 8l9-5 9 5-9 5-9-5zM3 8v9l9 5 9-5V8M12 13v9"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 1 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2-2 2.6-2.6z"/></symbol>
+  <symbol id="i-pallet" viewBox="0 0 24 24"><path d="M2 8h20M2 12h20M2 16h20M5 8v8M12 8v8M19 8v8"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 16V7a1 1 0 0 1 1-1h10v10H2zM13 10h5l3 3v3h-8"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+</svg>
+
+<div class="demo-banner">🛈 <b>Product prototype:</b> Veyor is a demo — listings, suppliers and orders below are illustrative sample data, not live transactions.</div>
+
+<!-- ================= NAV ================= -->
+<header class="topnav">
+  <div class="container nav-inner">
+    <div class="brand" style="cursor:pointer" onclick="showView('home')">
+      <div class="brand-mark">V</div>
+      <div class="brand-name">VEY<span>OR</span></div>
+    </div>
+    <nav class="nav-links">
+      <a href="#" onclick="showView('marketplace');return false;" data-view="marketplace">Marketplace</a>
+      <a href="#" onclick="openRfqModal();return false;">Post an RFQ</a>
+      <a href="#" onclick="showView('home');scrollToId('pricing');return false;">Pricing</a>
+      <a href="#" onclick="showView('home');scrollToId('ai-section');return false;">AI Copilot</a>
+      <a href="#" onclick="showView('home');scrollToId('sellers');return false;">Sell on Veyor</a>
+    </nav>
+    <div class="nav-right">
+      <span class="nav-role-pill" id="rolePill">Viewing as <b id="roleLabel">Guest</b></span>
+      <button class="icon-btn" title="Dashboard" onclick="goToDashboard()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><use href="#i-bell"></use></svg></button>
+      <button class="btn btn-ghost btn-sm" style="color:#fff; border-color:rgba(255,255,255,0.25)" onclick="openAuthModal()">Sign in</button>
+      <button class="btn btn-primary btn-sm" onclick="openAuthModal()">Get started</button>
+      <button class="hamburger" onclick="toggleMobileNav()">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HOME VIEW ================= -->
+<div class="view active" id="view-home">
+
+  <section class="hero" style="padding-top:56px;">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">THE B2B PROCUREMENT EXCHANGE</div>
+        <h1>Every material, machine &amp; manufacturer — <em>in one exchange.</em></h1>
+        <p class="lede">Veyor connects buyers with verified suppliers across raw materials, machinery, components, chemicals and industrial surplus. Its AI prioritizes the closest, most trusted supplier first — and automatically expands to regional, national or global sourcing only when local supply can't meet demand.</p>
+        <form class="search-bar" onsubmit="doHeroSearch(event)">
+          <input type="text" id="heroSearch" placeholder="Search 2.4M+ listings — try 'cold rolled steel coil' or 'CNC lathe'">
+          <button type="submit">Search</button>
+        </form>
+        <div class="search-hint">Trending: hot-rolled steel · injection molding machines · HDPE granules · industrial bearings</div>
+        <div class="hero-ctas">
+          <button class="btn btn-primary" onclick="openRfqModal()">Post an RFQ</button>
+          <button class="btn btn-ghost" style="color:#fff; border-color:rgba(255,255,255,0.3)" onclick="showView('marketplace')">Browse marketplace →</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hv-head">
+          <span class="tag mono"><span class="live-dot"></span>&nbsp; LIVE ACTIVITY</span>
+          <span class="tag mono">AI-MATCHED</span>
+        </div>
+        <div id="hvFeed"></div>
+      </div>
+    </div>
+    <div class="ticker-wrap">
+      <div class="ticker-outer">
+        <div class="ticker-track" id="tickerTrack"></div>
+      </div>
+    </div>
+    <div class="market-pulse-wrap">
+      <div class="container market-pulse" id="marketPulse">
+        <div class="mp-label mono"><span class="live-dot"></span>&nbsp;LIVE MARKET DATA</div>
+        <div class="mp-cards" id="mpCards">
+          <div class="mp-card"><div class="mp-name">Loading market data…</div></div>
+        </div>
+        <div class="mp-source mono" id="mpSource"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stat-strip">
+    <div class="container">
+      <div class="stat"><div class="num mono">38,400+</div><div class="lab">Verified suppliers</div></div>
+      <div class="stat"><div class="num mono">142</div><div class="lab">Countries sourced from</div></div>
+      <div class="stat"><div class="num mono">$2.1B+</div><div class="lab">RFQ value facilitated</div></div>
+      <div class="stat"><div class="num mono">4.2 hrs</div><div class="lab">Avg. time to first quote</div></div>
+    </div>
+  </div>
+
+  <section class="match-section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">AI SOURCING ENGINE</div>
+          <h2>Local first. Global when it matters.</h2>
+          <p>Veyor's AI scores every candidate supplier on proximity, trust, price, logistics fit and quality — recommending the best <em style="color:#fff; font-style:normal;">total</em> procurement outcome, not just the lowest price. It starts local and only expands outward when local supply can't meet demand.</p>
+        </div>
+      </div>
+      <div class="match-engine-grid">
+        <div>
+          <div class="match-controls">
+            <label>Sourcing category</label>
+            <select id="matchCategory"></select>
+            <label>Your location</label>
+            <input type="text" id="matchLocation" value="Bengaluru, IN">
+            <label>Quantity needed</label>
+            <input type="text" id="matchQty" value="20 MT" placeholder="e.g. 20 MT / 5,000 units">
+            <button class="btn btn-ai btn-block" style="margin-top:18px;" onclick="runAiMatch()" id="runMatchBtn">Run AI sourcing match</button>
+            <div class="match-log" id="matchLog"></div>
+          </div>
+          <div class="match-results" id="matchResults"></div>
+        </div>
+        <div class="radar-card">
+          <svg id="radarSvg" viewBox="0 0 340 340" width="100%" style="max-width:360px;"></svg>
+          <div class="radar-legend">
+            <span><span class="lg-dot" style="background:var(--ai)"></span>Candidate supplier</span>
+            <span><span class="lg-dot" style="background:var(--signal)"></span>AI-recommended match</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">SOURCING CATEGORIES</div>
+        <h2>Nine categories. One marketplace.</h2>
+        <p>From raw feedstock to finished machinery — buy and sell directly, with every seller identity-verified.</p>
+      </div>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+  </section>
+
+  <section class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">FEATURED ON VEYOR</div>
+        <h2>Live listings from verified sellers</h2>
+        <p>A snapshot of what's sourcing right now across the exchange.</p>
+      </div>
+      <button class="btn btn-dark" onclick="showView('marketplace')">View full marketplace</button>
+    </div>
+    <div class="grid-4" id="featuredGrid"></div>
+  </section>
+
+  <section class="container">
+    <div class="section-head">
+      <div><div class="eyebrow">HOW BUYING WORKS</div><h2>From spec to shipment, in four steps</h2></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="stepnum">STEP 01</div><h3>Post your RFQ or search listings</h3><p>Describe what you need — or let the AI Copilot draft the technical spec for you in seconds.</p></div>
+      <div class="step"><div class="stepnum">STEP 02</div><h3>Get matched &amp; compare quotes</h3><p>The AI scores nearby suppliers first on trust, price, logistics and quality, then expands regionally, nationally or globally only if local supply falls short.</p></div>
+      <div class="step"><div class="stepnum">STEP 03</div><h3>Negotiate &amp; confirm the order</h3><p>Message suppliers directly, counter-offer, and lock in terms with Veyor Trade Assurance.</p></div>
+      <div class="step"><div class="stepnum">STEP 04</div><h3>Ship, track &amp; pay</h3><p>Freight partners handle logistics; payment releases on delivery confirmation.</p></div>
+    </div>
+  </section>
+
+  <section class="container" id="ai-section">
+    <div class="ai-panel-cta">
+      <div>
+        <div class="eyebrow" style="color:var(--ai)">AI PROCUREMENT COPILOT</div>
+        <h2>Your sourcing team's smartest analyst</h2>
+        <p>The Copilot drafts technical specs, flags risky payment terms, compares supplier quotes line-by-line, and suggests negotiation language — built into every step of the buying flow.</p>
+        <ul class="ai-feature-list">
+          <li><span class="chk">✓</span> Draft an RFQ from a plain-language description</li>
+          <li><span class="chk">✓</span> Score suppliers by proximity, trust, price, logistics &amp; quality</li>
+          <li><span class="chk">✓</span> Expand from local → regional → national → global automatically when needed</li>
+          <li><span class="chk">✓</span> Compare quotes across price, lead time &amp; Incoterms</li>
+          <li><span class="chk">✓</span> Suggest counter-offers and negotiation phrasing</li>
+          <li><span class="chk">✓</span> Explain trade terms, tariffs and documentation</li>
+        </ul>
+        <button class="btn btn-ai" onclick="openAiDrawer()">Try the AI Copilot</button>
+      </div>
+      <div class="ai-mock-chat">
+        <div class="bubble me">Draft an RFQ for 20 tons of cold-rolled steel coil, 0.8mm, delivered to Chennai.</div>
+        <div class="bubble">Here's a draft spec: Grade CRCA, thickness 0.8mm ±0.02, width 1250mm, coil weight 8–10MT, mill-test certificate required, delivery DAP Chennai, target lead time 3 weeks. Want me to send this to matching suppliers?</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="sellers">
+    <div class="seller-pitch">
+      <div>
+        <div class="eyebrow">FOR SUPPLIERS</div>
+        <h2>List once. Reach global demand.</h2>
+        <p style="color:var(--steel); font-size:15px; margin-top:10px; text-transform:none;">Veyor never touches your inventory or takes ownership of your goods — you sell directly to buyers, on your own terms.</p>
+        <ul>
+          <li><span class="num">01</span><div><b>Get verified once</b><span>Business registration + trade references reviewed by our trust &amp; safety team.</span></div></li>
+          <li><span class="num">02</span><div><b>List your catalog or capacity</b><span>Products, machinery, or contract manufacturing capacity — searchable by qualified buyers.</span></div></li>
+          <li><span class="num">03</span><div><b>Receive matched RFQs</b><span>Only requests that fit your categories, MOQ and regions reach your inbox.</span></div></li>
+          <li><span class="num">04</span><div><b>Quote, negotiate, get paid</b><span>Trade Assurance protects payment release tied to delivery confirmation.</span></div></li>
+        </ul>
+        <button class="btn btn-dark" onclick="openAuthModal('seller')">Start selling on Veyor</button>
+      </div>
+      <div class="seller-visual">
+        <div class="kpi-row" style="grid-template-columns:1fr 1fr; margin-bottom:16px;">
+          <div class="kpi"><div class="k-label">Profile views (30d)</div><div class="k-val">4,812</div><div class="k-delta">▲ 18% vs prior</div></div>
+          <div class="kpi"><div class="k-label">Quote win rate</div><div class="k-val">31%</div><div class="k-delta">▲ 4pt vs prior</div></div>
+        </div>
+        <div class="card" style="padding:16px;">
+          <div style="font-size:12px; font-family:'IBM Plex Mono'; color:var(--steel); text-transform:uppercase; margin-bottom:10px;">Incoming RFQ</div>
+          <div style="font-size:14px; font-weight:600; margin-bottom:4px;">40MT Aluminium Extrusion Profiles</div>
+          <div style="font-size:12.5px; color:var(--steel); margin-bottom:10px;">Buyer: Verified Manufacturer, Germany · Needed in 15 days</div>
+          <button class="btn btn-primary btn-sm">Send quote</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" id="pricing">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">PRICING</div>
+        <h2>Plans for every stage of sourcing</h2>
+        <p>Simple subscriptions plus a small success fee on completed orders — never a markup on goods.</p>
+      </div>
+    </div>
+    <div class="pricing-grid">
+      <div class="plan">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">$0<span>/mo</span></div>
+        <div class="plan-sub">For buyers exploring the market</div>
+        <ul>
+          <li>Up to 5 RFQs / month</li>
+          <li>Browse full marketplace</li>
+          <li>Standard support</li>
+          <li>Basic supplier verification badges</li>
+        </ul>
+        <button class="btn btn-ghost btn-block" onclick="openAuthModal('buyer')">Start free</button>
+      </div>
+      <div class="plan featured">
+        <div class="plan-name">Growth</div>
+        <div class="plan-price">$199<span>/mo</span></div>
+        <div class="plan-sub">For active procurement teams</div>
+        <ul>
+          <li>Unlimited RFQs &amp; quote comparisons</li>
+          <li>Full AI Copilot access</li>
+          <li>Priority supplier matching</li>
+          <li>1.5% transaction fee on closed orders</li>
+        </ul>
+        <button class="btn btn-primary btn-block" onclick="openAuthModal('buyer')">Get started</button>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Seller Pro</div>
+        <div class="plan-price">$99<span>/mo</span></div>
+        <div class="plan-sub">For suppliers &amp; manufacturers</div>
+        <ul>
+          <li>Storefront + unlimited listings</li>
+          <li>Featured placement &amp; ad credits</li>
+          <li>Lead &amp; RFQ management tools</li>
+          <li>2% success fee on closed orders</li>
+        </ul>
+        <button class="btn btn-ghost btn-block" onclick="openAuthModal('seller')">List your business</button>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price">Custom</div>
+        <div class="plan-sub">For large procurement orgs</div>
+        <ul>
+          <li>Dedicated account manager</li>
+          <li>ERP / SAP Ariba punchout integration</li>
+          <li>Custom contracts &amp; trade financing</li>
+          <li>Volume-based fee discounts</li>
+        </ul>
+        <button class="btn btn-ghost btn-block" onclick="openAuthModal('enterprise')">Talk to sales</button>
+      </div>
+    </div>
+    <div class="revenue-note">
+      <b>How Veyor makes money:</b> subscription plans, a small transaction fee on completed orders, enterprise software &amp; integrations, advertising and featured placements, logistics &amp; trade-financing partnerships, and premium AI procurement services. Veyor never owns or resells inventory — every listing is sold directly by its verified seller.
+    </div>
+  </section>
+
+  <section class="container" style="padding-top:0;">
+    <div style="background:var(--ink); border-radius:var(--radius-lg); padding:52px; text-align:center; color:#fff;">
+      <h2 style="color:#fff; font-size:30px;">Ready to source smarter?</h2>
+      <p style="color:rgba(255,255,255,0.65); max-width:520px; margin:14px auto 26px; text-transform:none; font-size:15px;">Join buyers and suppliers already trading raw materials, machinery and industrial surplus on Veyor.</p>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <button class="btn btn-primary" onclick="openAuthModal('buyer')">Get started as a buyer</button>
+        <button class="btn btn-ghost" style="color:#fff; border-color:rgba(255,255,255,0.3)" onclick="openAuthModal('seller')">Get started as a seller</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ================= MARKETPLACE VIEW ================= -->
+<div class="view" id="view-marketplace">
+  <div class="container page-head">
+    <div class="eyebrow">MARKETPLACE</div>
+    <h1>Browse verified listings</h1>
+  </div>
+  <div class="container" style="padding-bottom:80px;">
+    <div class="mp-layout">
+      <aside class="filters">
+        <h4>Category</h4>
+        <div class="filter-group" id="filterCategories"></div>
+        <h4>Supplier</h4>
+        <div class="filter-group">
+          <label><input type="checkbox" id="filterVerified" onchange="renderMarketplace()"> Verified only</label>
+        </div>
+        <h4>Max lead time</h4>
+        <div class="filter-group">
+          <input type="range" id="filterLead" min="1" max="60" value="60" oninput="document.getElementById('leadVal').textContent=this.value; renderMarketplace()">
+          <div class="hint"><span id="leadVal">60</span> days or less</div>
+        </div>
+        <button class="btn btn-ghost btn-block btn-sm" onclick="resetFilters()">Reset filters</button>
+      </aside>
+      <div>
+        <div class="toolbar">
+          <input type="text" id="mpSearch" placeholder="Search listings..." style="min-width:240px;" oninput="renderMarketplace()">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <span class="results-count" id="resultsCount"></span>
+            <select id="mpSort" onchange="renderMarketplace()">
+              <option value="relevance">Sort: Relevance</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Supplier rating</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-3" id="mpGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= BUYER DASHBOARD ================= -->
+<div class="view" id="view-buyer">
+  <div class="container page-head">
+    <div class="eyebrow">BUYER DASHBOARD</div>
+    <h1>Your procurement activity</h1>
+  </div>
+  <div class="container" style="padding-bottom:80px;">
+    <div class="dash-tabs">
+      <div class="dash-tab active" onclick="switchDashTab('buyer','rfqs')">My RFQs</div>
+      <div class="dash-tab" onclick="switchDashTab('buyer','quotes')">Quotes received</div>
+      <div class="dash-tab" onclick="switchDashTab('buyer','orders')">Orders</div>
+      <div class="dash-tab" onclick="switchDashTab('buyer','saved')">Saved suppliers</div>
+    </div>
+
+    <div class="dash-tab-panel active" id="buyer-rfqs">
+      <div class="card">
+        <table class="dtable" id="rfqTable">
+          <thead><tr><th>RFQ</th><th>Product</th><th>Quantity</th><th>Status</th><th>Quotes</th><th>Posted</th></tr></thead>
+          <tbody id="rfqTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="dash-tab-panel" id="buyer-quotes">
+      <div class="card" style="margin-bottom:18px;">
+        <div style="font-size:13px; color:var(--steel); margin-bottom:4px;">Comparing quotes for</div>
+        <div style="font-size:16px; font-weight:600;">RFQ-4821 — 20MT Cold-Rolled Steel Coil, 0.8mm</div>
+      </div>
+      <div class="compare-grid">
+        <div class="quote-card best">
+          <div class="qbadge">✓ Best value</div>
+          <div style="font-size:13.5px; font-weight:600; margin-bottom:8px;">Shanghai Hengtai Steel Co.</div>
+          <div class="qprice mono">$612<span style="font-size:12px; color:var(--steel);">/MT</span></div>
+          <div class="quote-row"><span>Lead time</span><span>18 days</span></div>
+          <div class="quote-row"><span>Incoterm</span><span>FOB Shanghai</span></div>
+          <div class="quote-row"><span>Rating</span><span class="stars">★★★★★</span></div>
+          <div style="display:flex; gap:8px; margin-top:14px;">
+            <button class="btn btn-primary btn-sm" style="flex:1" onclick="showToast('Order request sent to Shanghai Hengtai Steel Co.')">Accept</button>
+            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openAiDrawer('Help me write a counter-offer to Shanghai Hengtai Steel Co. for a lower steel coil price.')">Counter</button>
+          </div>
+        </div>
+        <div class="quote-card">
+          <div class="qbadge" style="color:var(--steel)">Fastest lead time</div>
+          <div style="font-size:13.5px; font-weight:600; margin-bottom:8px;">Bharat Steelworks Pvt Ltd</div>
+          <div class="qprice mono">$641<span style="font-size:12px; color:var(--steel);">/MT</span></div>
+          <div class="quote-row"><span>Lead time</span><span>9 days</span></div>
+          <div class="quote-row"><span>Incoterm</span><span>DAP Chennai</span></div>
+          <div class="quote-row"><span>Rating</span><span class="stars">★★★★☆</span></div>
+          <div style="display:flex; gap:8px; margin-top:14px;">
+            <button class="btn btn-primary btn-sm" style="flex:1" onclick="showToast('Order request sent to Bharat Steelworks Pvt Ltd')">Accept</button>
+            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openAiDrawer('Help me write a counter-offer to Bharat Steelworks for a lower steel coil price.')">Counter</button>
+          </div>
+        </div>
+        <div class="quote-card">
+          <div class="qbadge" style="color:var(--steel)">Highest rated</div>
+          <div style="font-size:13.5px; font-weight:600; margin-bottom:8px;">Ruhr Metallwerk GmbH</div>
+          <div class="qprice mono">$689<span style="font-size:12px; color:var(--steel);">/MT</span></div>
+          <div class="quote-row"><span>Lead time</span><span>24 days</span></div>
+          <div class="quote-row"><span>Incoterm</span><span>CIF Hamburg</span></div>
+          <div class="quote-row"><span>Rating</span><span class="stars">★★★★★</span></div>
+          <div style="display:flex; gap:8px; margin-top:14px;">
+            <button class="btn btn-primary btn-sm" style="flex:1" onclick="showToast('Order request sent to Ruhr Metallwerk GmbH')">Accept</button>
+            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openAiDrawer('Help me write a counter-offer to Ruhr Metallwerk for a lower steel coil price.')">Counter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-tab-panel" id="buyer-orders">
+      <div class="card">
+        <table class="dtable">
+          <thead><tr><th>Order</th><th>Supplier</th><th>Value</th><th>Status</th><th>ETA</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">ORD-2291</td><td>Bharat Steelworks Pvt Ltd</td><td class="mono">$12,820</td><td><span class="status-pill status-shipped">Shipped</span></td><td>Jul 22, 2026</td></tr>
+            <tr><td class="mono">ORD-2277</td><td>Dragon Plastics Co.</td><td class="mono">$4,150</td><td><span class="status-pill status-delivered">Delivered</span></td><td>Jul 3, 2026</td></tr>
+            <tr><td class="mono">ORD-2260</td><td>Vertex CNC Solutions</td><td class="mono">$58,000</td><td><span class="status-pill status-open">Processing</span></td><td>Aug 14, 2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="dash-tab-panel" id="buyer-saved">
+      <div class="grid-3" id="savedSuppliersGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SELLER DASHBOARD ================= -->
+<div class="view" id="view-seller">
+  <div class="container page-head">
+    <div class="eyebrow">SELLER DASHBOARD</div>
+    <h1>Your storefront performance</h1>
+  </div>
+  <div class="container" style="padding-bottom:80px;">
+    <div class="kpi-row">
+      <div class="kpi"><div class="k-label">Profile views (30d)</div><div class="k-val">4,812</div><div class="k-delta">▲ 18%</div></div>
+      <div class="kpi"><div class="k-label">Open RFQs matched</div><div class="k-val">27</div><div class="k-delta">▲ 6 new</div></div>
+      <div class="kpi"><div class="k-label">Quote win rate</div><div class="k-val">31%</div><div class="k-delta">▲ 4pt</div></div>
+      <div class="kpi"><div class="k-label">Avg. response time</div><div class="k-val">2.1 hrs</div><div class="k-delta">▲ faster</div></div>
+    </div>
+
+    <div class="dash-tabs">
+      <div class="dash-tab active" onclick="switchDashTab('seller','listings')">My listings</div>
+      <div class="dash-tab" onclick="switchDashTab('seller','rfqs')">Incoming RFQs</div>
+      <div class="dash-tab" onclick="switchDashTab('seller','orders')">Orders</div>
+      <div class="dash-tab" onclick="switchDashTab('seller','analytics')">Analytics</div>
+    </div>
+
+    <div class="dash-tab-panel active" id="seller-listings">
+      <div class="card">
+        <div style="display:flex; justify-content:flex-end; margin-bottom:14px;">
+          <button class="btn btn-primary btn-sm" onclick="showToast('New listing draft created')">+ New listing</button>
+        </div>
+        <table class="dtable">
+          <thead><tr><th>Listing</th><th>Category</th><th>Price</th><th>Status</th><th>Views</th><th></th></tr></thead>
+          <tbody id="sellerListingsBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="dash-tab-panel" id="seller-rfqs">
+      <div class="card">
+        <table class="dtable">
+          <thead><tr><th>Buyer</th><th>Product needed</th><th>Quantity</th><th>Needed by</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>Verified Manufacturer, DE</td><td>Aluminium extrusion profiles</td><td>40 MT</td><td>15 days</td><td><button class="btn btn-primary btn-sm" onclick="openQuoteModal('Aluminium extrusion profiles')">Send quote</button></td></tr>
+            <tr><td>Verified Buyer, US</td><td>Industrial ball bearings, 6205</td><td>12,000 pcs</td><td>21 days</td><td><button class="btn btn-primary btn-sm" onclick="openQuoteModal('Industrial ball bearings 6205')">Send quote</button></td></tr>
+            <tr><td>Verified Buyer, VN</td><td>PP packaging film, 20 micron</td><td>8 MT</td><td>10 days</td><td><button class="btn btn-primary btn-sm" onclick="openQuoteModal('PP packaging film 20 micron')">Send quote</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="dash-tab-panel" id="seller-orders">
+      <div class="card">
+        <table class="dtable">
+          <thead><tr><th>Order</th><th>Buyer</th><th>Value</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">ORD-2291</td><td>Kavya Industries</td><td class="mono">$12,820</td><td><span class="status-pill status-shipped">Shipped</span></td></tr>
+            <tr><td class="mono">ORD-2244</td><td>Meridian Manufacturing</td><td class="mono">$31,400</td><td><span class="status-pill status-delivered">Delivered</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="dash-tab-panel" id="seller-analytics">
+      <div class="card">
+        <div style="font-size:13px; font-family:'IBM Plex Mono'; color:var(--steel); text-transform:uppercase; margin-bottom:4px;">Profile views — last 6 months</div>
+        <div class="bars" id="analyticsBars"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TOASTS ================= -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ================= MODAL: RFQ ================= -->
+<div class="overlay" id="modal-rfq-overlay">
+  <div class="modal wide">
+    <div class="modal-head">
+      <h3>Post a Request for Quote</h3>
+      <button class="modal-close" onclick="closeModal('modal-rfq-overlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label>Category</label>
+          <select id="rfqCategory"></select>
+        </div>
+        <div class="form-row">
+          <label>Delivery location</label>
+          <input type="text" id="rfqLocation" placeholder="City, Country">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>What do you need? <span style="font-weight:400; color:var(--steel);">— be specific, or let AI help below</span></label>
+        <textarea id="rfqDescription" placeholder="e.g. 20 metric tons of cold-rolled steel coil, 0.8mm thickness, mill-test certificate required"></textarea>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label>Quantity</label>
+          <input type="text" id="rfqQty" placeholder="e.g. 20 MT / 500 units">
+        </div>
+        <div class="form-row">
+          <label>Target unit price (optional)</label>
+          <input type="text" id="rfqPrice" placeholder="e.g. $600/MT">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Required by</label>
+        <input type="date" id="rfqDate">
+      </div>
+      <button type="button" class="btn btn-ai btn-sm" style="margin-bottom:16px;" onclick="askAiToDraftRfq()">✨ Ask AI Copilot to draft this spec</button>
+      <button class="btn btn-primary btn-block" onclick="submitRfq()">Send RFQ to verified suppliers</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: PRODUCT DETAIL ================= -->
+<div class="overlay" id="modal-product-overlay">
+  <div class="modal wide" id="productModalContent"></div>
+</div>
+
+<!-- ================= MODAL: AUTH ================= -->
+<div class="overlay" id="modal-auth-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Sign in to Veyor (demo)</h3>
+      <button class="modal-close" onclick="closeModal('modal-auth-overlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label>I am a...</label>
+        <div style="display:flex; gap:10px;">
+          <label style="display:flex; align-items:center; gap:6px; font-weight:400;"><input type="radio" name="authRole" value="buyer" checked> Buyer</label>
+          <label style="display:flex; align-items:center; gap:6px; font-weight:400;"><input type="radio" name="authRole" value="seller"> Seller</label>
+          <label style="display:flex; align-items:center; gap:6px; font-weight:400;"><input type="radio" name="authRole" value="enterprise"> Enterprise</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Work email</label>
+        <input type="email" id="authEmail" placeholder="you@company.com">
+      </div>
+      <div class="form-row">
+        <label>Company name</label>
+        <input type="text" id="authCompany" placeholder="Your company">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="submitAuth()">Continue</button>
+      <div class="hint" style="text-align:center; margin-top:12px;">This is a demo sign-in — no account is actually created.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: SELLER QUOTE ================= -->
+<div class="overlay" id="modal-quote-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Send a quote</h3>
+      <button class="modal-close" onclick="closeModal('modal-quote-overlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label>Responding to</label>
+        <input type="text" id="quoteFor" disabled>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>Unit price</label><input type="text" placeholder="e.g. $615/MT"></div>
+        <div class="form-row"><label>Lead time (days)</label><input type="text" placeholder="e.g. 18"></div>
+      </div>
+      <div class="form-row"><label>Incoterm</label><input type="text" placeholder="e.g. FOB Shanghai"></div>
+      <div class="form-row"><label>Message to buyer</label><textarea placeholder="Add any notes on specs, certifications or MOQ..."></textarea></div>
+      <button class="btn btn-primary btn-block" onclick="submitQuote()">Send quote to buyer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= AI COPILOT DRAWER ================= -->
+<div class="scrim" id="aiScrim" onclick="closeAiDrawer()"></div>
+<div class="ai-drawer" id="aiDrawer">
+  <div class="ai-drawer-head">
+    <div class="h-title"><span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><use href="#i-sparkle"></use></svg></span> Veyor AI Copilot</div>
+    <button class="modal-close" style="color:#fff" onclick="closeAiDrawer()">✕</button>
+  </div>
+  <div class="ai-messages" id="aiMessages"></div>
+  <div class="ai-chips" id="aiChips">
+    <div class="ai-chip" onclick="sendAiSuggestion('Draft an RFQ for 10,000 units of M8 hex bolts, zinc plated.')">Draft an RFQ</div>
+    <div class="ai-chip" onclick="sendAiSuggestion('Explain the difference between FOB and CIF for a first-time importer.')">Explain Incoterms</div>
+    <div class="ai-chip" onclick="sendAiSuggestion('Give me negotiation tips for lowering a supplier MOQ.')">Negotiation tips</div>
+  </div>
+  <div class="ai-input-row">
+    <input type="text" id="aiInput" placeholder="Ask about sourcing, specs, or negotiation..." onkeydown="if(event.key==='Enter')sendAiMessage()">
+    <button onclick="sendAiMessage()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><use href="#i-send"></use></svg></button>
+  </div>
+</div>
+<button class="ai-fab" id="aiFab" onclick="openAiDrawer()" title="AI Procurement Copilot">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><use href="#i-sparkle"></use></svg>
+</button>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:12px;">
+          <div class="brand-mark">V</div>
+          <div class="brand-name" style="color:#fff;">VEY<span style="color:var(--signal)">OR</span></div>
+        </div>
+        <p style="font-size:13.5px; color:rgba(255,255,255,0.5); max-width:260px; line-height:1.6;">The AI-powered B2B procurement exchange for materials, machinery and industrial supply.</p>
+      </div>
+      <div>
+        <h4>Marketplace</h4>
+        <a href="#" onclick="showView('marketplace');return false;">Browse listings</a>
+        <a href="#" onclick="openRfqModal();return false;">Post an RFQ</a>
+        <a href="#" onclick="showView('home');scrollToId('pricing');return false;">Pricing</a>
+      </div>
+      <div>
+        <h4>Solutions</h4>
+        <a href="#" onclick="showView('home');scrollToId('ai-section');return false;">AI Copilot</a>
+        <a href="#" onclick="showView('home');scrollToId('sellers');return false;">For suppliers</a>
+        <a href="#" onclick="openAuthModal('enterprise');return false;">Enterprise</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+        <a href="#">Trust &amp; Safety</a>
+      </div>
+      <div>
+        <h4>Stay updated</h4>
+        <div style="display:flex; gap:8px;">
+          <input type="text" placeholder="Email address" style="flex:1; padding:9px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#fff; font-size:12.5px;">
+          <button class="btn btn-primary btn-sm" onclick="showToast('Subscribed (demo)')">Join</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-disclaimer">© 2026 Veyor. Product prototype for demonstration purposes. Listings, suppliers, RFQs and order history shown are illustrative sample data. Market data in the ticker above is live and real, sourced from public market data providers.</div>
+      <div style="display:flex; gap:16px;"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ LIVE CONFIG ============ */
+/* Point this at your deployed backend (see /server folder + README) that proxies
+   the Anthropic API using a server-side key. Never call api.anthropic.com directly
+   from browser JS in a deployed site — the key would be exposed to every visitor. */
+const AI_BACKEND_URL = "https://YOUR-BACKEND-URL.example.com/api/copilot";
+
+/* ============ DATA ============ */
+const CATEGORIES = [
+  {id:'raw', name:'Raw Materials', icon:'i-ingot', color:'#2C6E9E', count:'412,000+'},
+  {id:'machinery', name:'Machinery & Equipment', icon:'i-gear', color:'#57626F', count:'88,200+'},
+  {id:'electronics', name:'Electronics & Components', icon:'i-chip', color:'#0EA5A0', count:'265,900+'},
+  {id:'chemicals', name:'Industrial Chemicals', icon:'i-flask', color:'#8A5FBF', count:'71,300+'},
+  {id:'construction', name:'Construction Materials', icon:'i-crane', color:'#B9790A', count:'190,400+'},
+  {id:'packaging', name:'Packaging & Containers', icon:'i-box', color:'#1B8A5A', count:'134,700+'},
+  {id:'spareparts', name:'Spare Parts & MRO', icon:'i-wrench', color:'#C0392B', count:'302,100+'},
+  {id:'warehouse', name:'Warehouse & Surplus', icon:'i-pallet', color:'#3B5B7C', count:'53,800+'},
+  {id:'logistics', name:'Logistics & Freight', icon:'i-truck', color:'#FF6A2C', count:'21,600+'}
+];
+
+const LISTINGS = [
+  {id:1, title:'Cold-Rolled Steel Coil, CRCA, 0.8mm', cat:'raw', supplier:'Shanghai Hengtai Steel Co.', loc:'Shanghai, CN', verified:true, rating:4.9, price:612, unit:'MT', moq:'10 MT', lead:18, incoterm:'FOB Shanghai', icon:'i-ingot', color:'#2C6E9E'},
+  {id:2, title:'CNC Vertical Machining Center VMC-850', cat:'machinery', supplier:'Vertex CNC Solutions', loc:'Coimbatore, IN', verified:true, rating:4.7, price:58000, unit:'unit', moq:'1 unit', lead:35, incoterm:'EXW', icon:'i-gear', color:'#57626F'},
+  {id:3, title:'SMD Multilayer Ceramic Capacitors, 0402', cat:'electronics', supplier:'Zhen Wei Electronics Ltd', loc:'Shenzhen, CN', verified:true, rating:4.8, price:0.004, unit:'pc', moq:'100,000 pcs', lead:12, incoterm:'FOB Shenzhen', icon:'i-chip', color:'#0EA5A0'},
+  {id:4, title:'HDPE Granules, Injection Grade', cat:'chemicals', supplier:'Dragon Plastics Co.', loc:'Ho Chi Minh City, VN', verified:true, rating:4.6, price:1180, unit:'MT', moq:'5 MT', lead:14, incoterm:'FOB HCMC', icon:'i-flask', color:'#8A5FBF'},
+  {id:5, title:'Ready-Mix Concrete M25 Grade', cat:'construction', supplier:'Bharat Infra Materials', loc:'Ahmedabad, IN', verified:true, rating:4.5, price:82, unit:'m³', moq:'20 m³', lead:3, incoterm:'DAP', icon:'i-crane', color:'#B9790A'},
+  {id:6, title:'Corrugated Shipping Boxes, Custom Print', cat:'packaging', supplier:'PackRight Industries', loc:'Jakarta, ID', verified:false, rating:4.3, price:0.42, unit:'pc', moq:'5,000 pcs', lead:10, incoterm:'FOB Jakarta', icon:'i-box', color:'#1B8A5A'},
+  {id:7, title:'Deep Groove Ball Bearings, 6205-2RS', cat:'spareparts', supplier:'Kavya Industries', loc:'Rajkot, IN', verified:true, rating:4.6, price:0.85, unit:'pc', moq:'1,000 pcs', lead:9, incoterm:'FOB Mundra', icon:'i-wrench', color:'#C0392B'},
+  {id:8, title:'Used Warehouse Racking System (Grade B)', cat:'warehouse', supplier:'Meridian Surplus Assets', loc:'Rotterdam, NL', verified:true, rating:4.4, price:145, unit:'bay', moq:'20 bays', lead:20, incoterm:'EXW', icon:'i-pallet', color:'#3B5B7C'},
+  {id:9, title:'FCL Ocean Freight, Asia → Europe', cat:'logistics', supplier:'BlueLane Logistics', loc:'Singapore, SG', verified:true, rating:4.8, price:1850, unit:'container', moq:'1 container', lead:28, incoterm:'CIF', icon:'i-truck', color:'#FF6A2C'},
+  {id:10, title:'Aluminium Extrusion Profiles, 6063-T5', cat:'raw', supplier:'Ruhr Metallwerk GmbH', loc:'Essen, DE', verified:true, rating:4.9, price:2890, unit:'MT', moq:'2 MT', lead:24, incoterm:'CIF Hamburg', icon:'i-ingot', color:'#2C6E9E'},
+  {id:11, title:'Industrial Injection Molding Machine, 250T', cat:'machinery', supplier:'Taizhou Precision Machinery', loc:'Taizhou, CN', verified:true, rating:4.6, price:41500, unit:'unit', moq:'1 unit', lead:40, incoterm:'FOB Ningbo', icon:'i-gear', color:'#57626F'},
+  {id:12, title:'Industrial Grade Sulphuric Acid, 98%', cat:'chemicals', supplier:'Andes Chemical Corp', loc:'Santiago, CL', verified:false, rating:4.2, price:210, unit:'MT', moq:'10 MT', lead:16, incoterm:'FOB Valparaiso', icon:'i-flask', color:'#8A5FBF'}
+];
+
+const catMap = Object.fromEntries(CATEGORIES.map(c=>[c.id,c]));
+let CURRENT_ROLE = null; // 'buyer' | 'seller' | 'enterprise'
+let aiHistory = [];
+let aiOpenedOnce = false;
+
+/* ---- AI Sourcing Engine mock supplier network ---- */
+/* Each supplier: name, tier (Local <50km / Regional <500km / National / Global), km distance,
+   trust/quality/logistics/price scores (0-100, higher = better). Proximity is derived from km. */
+const MATCH_SUPPLIERS = {
+  raw: [
+    {name:'Bangalore Ferro Alloys', tier:'Local', km:18, trust:88, quality:82, logistics:90, price:96},
+    {name:'Chennai SteelWorks', tier:'Regional', km:290, trust:91, quality:88, logistics:84, price:90},
+    {name:'Bhilai Steel Traders', tier:'National', km:1450, trust:85, quality:80, logistics:70, price:78},
+    {name:'Shanghai Hengtai Steel Co.', tier:'Global', km:4200, trust:95, quality:93, logistics:60, price:62},
+    {name:'Ruhr Metallwerk GmbH', tier:'Global', km:7600, trust:97, quality:96, logistics:52, price:55}
+  ],
+  machinery: [
+    {name:'Peenya Precision Tools', tier:'Local', km:25, trust:80, quality:78, logistics:85, price:82},
+    {name:'Coimbatore Machine Works', tier:'Regional', km:320, trust:86, quality:85, logistics:80, price:78},
+    {name:'Vertex CNC Solutions', tier:'National', km:1900, trust:88, quality:87, logistics:75, price:74},
+    {name:'Taizhou Precision Machinery', tier:'Global', km:5100, trust:90, quality:90, logistics:65, price:85}
+  ],
+  electronics: [
+    {name:'Bengaluru Circuit Traders', tier:'Regional', km:80, trust:70, quality:65, logistics:88, price:70},
+    {name:'Pune Electro Components', tier:'National', km:840, trust:78, quality:75, logistics:80, price:75},
+    {name:'Zhen Wei Electronics Ltd', tier:'Global', km:5600, trust:95, quality:94, logistics:82, price:92},
+    {name:'Taiwan MicroParts Corp', tier:'Global', km:5900, trust:90, quality:90, logistics:78, price:88}
+  ],
+  chemicals: [
+    {name:'Karnataka Chemworks', tier:'Regional', km:150, trust:75, quality:72, logistics:83, price:80},
+    {name:'Gujarat Chemical Traders', tier:'National', km:1750, trust:82, quality:80, logistics:76, price:83},
+    {name:'Andes Chemical Corp', tier:'Global', km:13500, trust:78, quality:76, logistics:55, price:90}
+  ],
+  construction: [
+    {name:'Bangalore Infra Materials', tier:'Local', km:12, trust:85, quality:80, logistics:92, price:88},
+    {name:'Bharat Infra Materials', tier:'Regional', km:350, trust:87, quality:83, logistics:85, price:82},
+    {name:'National Cement Traders', tier:'National', km:1600, trust:80, quality:78, logistics:70, price:85},
+    {name:'Gulf Building Materials', tier:'Global', km:3200, trust:83, quality:81, logistics:50, price:92}
+  ],
+  packaging: [
+    {name:'Bangalore PackWorks', tier:'Local', km:15, trust:79, quality:75, logistics:88, price:90},
+    {name:'Chennai PackRight Co.', tier:'Regional', km:280, trust:83, quality:80, logistics:82, price:85},
+    {name:'Delhi Packaging Traders', tier:'National', km:1750, trust:81, quality:79, logistics:75, price:83},
+    {name:'PackRight Industries', tier:'Global', km:3400, trust:80, quality:82, logistics:60, price:93}
+  ],
+  spareparts: [
+    {name:'Peenya Bearings & Fasteners', tier:'Local', km:20, trust:82, quality:80, logistics:90, price:88},
+    {name:'Chennai Fastener Traders', tier:'Regional', km:290, trust:80, quality:78, logistics:85, price:85},
+    {name:'Kavya Industries, Rajkot', tier:'National', km:1700, trust:88, quality:86, logistics:78, price:90},
+    {name:'Taiwan Bearing Corp', tier:'Global', km:5900, trust:90, quality:90, logistics:60, price:85}
+  ],
+  warehouse: [
+    {name:'South India Surplus Assets', tier:'Regional', km:400, trust:76, quality:74, logistics:80, price:88},
+    {name:'Meridian Surplus Assets India', tier:'National', km:1900, trust:80, quality:78, logistics:70, price:85},
+    {name:'Meridian Surplus Assets', tier:'Global', km:7800, trust:88, quality:85, logistics:45, price:92}
+  ],
+  logistics: [
+    {name:'Bangalore FreightLink', tier:'Local', km:10, trust:78, quality:75, logistics:95, price:85},
+    {name:'South India Logistics Co.', tier:'Regional', km:350, trust:82, quality:80, logistics:90, price:83},
+    {name:'BharatLine Freight', tier:'National', km:1500, trust:85, quality:83, logistics:85, price:80},
+    {name:'BlueLane Logistics', tier:'Global', km:3000, trust:92, quality:90, logistics:70, price:88}
+  ]
+};
+const TIER_ORDER = ['Local','Regional','National','Global'];
+const TIER_RADIUS = {Local:45, Regional:80, National:115, Global:150};
+const TIER_KM_LABEL = {Local:'within 50km', Regional:'within 500km', National:'nationwide', Global:'globally'};
+
+function proximityScore(km){ return Math.max(0, 100 - km/50); }
+function weightedScore(s){
+  const prox = proximityScore(s.km);
+  return s.trust*0.25 + s.quality*0.2 + s.logistics*0.2 + s.price*0.2 + prox*0.15;
+}
+function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
+/* ============ INIT RENDER ============ */
+function renderIconTile(container, item, size){
+  const c = catMap[item.cat] || item;
+  return `<div class="${container}" style="background:${item.color || c.color}"><svg viewBox="0 0 24 24"><use href="#${item.icon || c.icon}"></use></svg></div>`;
+}
+
+function renderCategories(){
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = CATEGORIES.map(c => `
+    <div class="cat-card" onclick="filterByCategory('${c.id}')">
+      <div class="cat-icon" style="background:${c.color}"><svg><use href="#${c.icon}"></use></svg></div>
+      <div>
+        <h3>${c.name}</h3>
+        <div class="count mono">${c.count} listings</div>
+      </div>
+    </div>`).join('');
+}
+
+function listingCardHTML(l){
+  const stars = '★★★★★'.slice(0, Math.round(l.rating)) + '☆☆☆☆☆'.slice(0, 5-Math.round(l.rating));
+  const priceDisplay = l.price < 1 ? '$'+l.price.toFixed(3) : '$'+l.price.toLocaleString();
+  return `
+  <div class="listing-card" onclick="openProductModal(${l.id})">
+    <div class="listing-thumb" style="background:${l.color}">
+      ${l.verified ? '<div class="verified-chip"><svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><use href="#i-check"></use></svg> Verified</div>' : ''}
+      <svg><use href="#${l.icon}"></use></svg>
+    </div>
+    <div class="listing-body">
+      <div class="listing-cat">${catMap[l.cat].name}</div>
+      <div class="listing-title">${l.title}</div>
+      <div class="listing-supplier">${l.supplier} · ${l.loc} <span class="stars">${stars}</span></div>
+      <div class="listing-price">${priceDisplay} <span>/ ${l.unit}</span></div>
+      <div class="listing-specs">
+        <div class="sp">MOQ<b>${l.moq}</b></div>
+        <div class="sp">Lead time<b>${l.lead}d</b></div>
+        <div class="sp">Terms<b>${l.incoterm}</b></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderFeatured(){
+  document.getElementById('featuredGrid').innerHTML = LISTINGS.slice(0,4).map(listingCardHTML).join('');
+}
+
+function renderHvFeed(){
+  const items = [
+    {name:'40MT HDPE granules', loc:'Ho Chi Minh City', status:'quoted in 6 min', color:'#3EDB8F'},
+    {name:'CNC Vertical Machining Center', loc:'3 verified sellers responded', status:'', color:'#0EA5A0'},
+    {name:'12,000 units M8 hex bolts', loc:'Ahmedabad → Rotterdam', status:'order confirmed', color:'#FF6A2C'},
+    {name:'20MT cold-rolled steel coil', loc:'RFQ #4821', status:'3 quotes received', color:'#3EDB8F'},
+  ];
+  document.getElementById('hvFeed').innerHTML = items.map(i => `
+    <div class="rfq-feed-item">
+      <span class="dot" style="background:${i.color}"></span>
+      <div class="body"><b>${i.name}</b><div class="meta">${i.loc}${i.status ? ' · '+i.status : ''}</div></div>
+      <span class="rt">now</span>
+    </div>`).join('');
+}
+
+function renderTicker(){
+  const items = [
+    "RFQ #48291 — 40 MT HDPE granules — Ho Chi Minh City → quoted in 6 min",
+    "RFQ #48287 — CNC Vertical Machining Center — 3 verified quotes received",
+    "Order confirmed — 12,000 units M8 hex bolts — Ahmedabad → Rotterdam",
+    "New supplier verified — Ruhr Metallwerk GmbH — Essen, DE",
+    "RFQ #48279 — 8 MT PP packaging film — quoted in 40 min",
+    "Order confirmed — 250T injection molding machine — Taizhou → Jakarta",
+    "RFQ #48265 — Warehouse racking, 20 bays — Rotterdam",
+    "New listing — Deep groove ball bearings 6205 — Rajkot, IN"
+  ];
+  const html = items.map(t => `<span>● <b>${t.split(' — ')[0]}</b> — ${t.split(' — ').slice(1).join(' — ')}</span>`).join('');
+  document.getElementById('tickerTrack').innerHTML = html + html; // duplicate for seamless loop
+}
+
+/* ============ LIVE MARKET DATA (real, no key required) ============ */
+/* USD/INR from ExchangeRate-API's open endpoint; metal spot prices from Gold-API.
+   Both are free, keyless, CORS-enabled public endpoints — actual live market data,
+   unlike the fictional listings/suppliers elsewhere on the page. */
+async function fetchMarketPulse(){
+  const cardsEl = document.getElementById('mpCards');
+  const sourceEl = document.getElementById('mpSource');
+  const fmtTime = () => new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+
+  const results = {};
+  try{
+    const fx = await fetch('https://open.er-api.com/v6/latest/USD').then(r=>r.json());
+    if(fx && fx.rates && fx.rates.INR) results.inr = fx.rates.INR;
+  } catch(e){ /* leave unset, card omitted below */ }
+
+  const metals = [
+    {sym:'XAU', label:'Gold', unit:'/ oz'},
+    {sym:'XAG', label:'Silver', unit:'/ oz'},
+    {sym:'HG',  label:'Copper', unit:'/ lb'}
+  ];
+  await Promise.all(metals.map(async m => {
+    try{
+      const d = await fetch(`https://api.gold-api.com/price/${m.sym}`).then(r=>r.json());
+      if(d && typeof d.price === 'number') results[m.sym] = d.price;
+    } catch(e){ /* skip this metal if it fails */ }
+  }));
+
+  const cards = [];
+  if(results.inr) cards.push(`<div class="mp-card"><span class="mp-name">USD/INR</span><span class="mp-val">₹${results.inr.toFixed(2)}</span></div>`);
+  metals.forEach(m => {
+    if(results[m.sym] !== undefined){
+      cards.push(`<div class="mp-card"><span class="mp-name">${m.label}</span><span class="mp-val">$${results[m.sym].toLocaleString(undefined,{maximumFractionDigits:2})}</span><span class="mp-name">${m.unit}</span></div>`);
+    }
+  });
+
+  if(cards.length){
+    cardsEl.innerHTML = cards.join('');
+    sourceEl.textContent = `Live · exchangerate-api.com, gold-api.com · updated ${fmtTime()}`;
+  } else {
+    cardsEl.innerHTML = `<div class="mp-card"><span class="mp-name">Market data temporarily unavailable</span></div>`;
+    sourceEl.textContent = '';
+  }
+}
+
+/* ============ AI SOURCING ENGINE ============ */
+function populateMatchCategorySelect(){
+  document.getElementById('matchCategory').innerHTML = CATEGORIES
+    .filter(c => MATCH_SUPPLIERS[c.id])
+    .map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+}
+function baseRadarSvg(){
+  let rings = '';
+  TIER_ORDER.forEach(t => {
+    rings += `<circle class="ring-${t}" cx="170" cy="170" r="${TIER_RADIUS[t]}" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1" />`;
+  });
+  let labels = '';
+  TIER_ORDER.forEach(t => {
+    labels += `<text x="170" y="${170-TIER_RADIUS[t]-6}" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.4)">${t.toUpperCase()}</text>`;
+  });
+  return `${rings}${labels}<circle cx="170" cy="170" r="5" fill="#FF6A2C"/><text x="170" y="188" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#fff">YOU</text><g id="radarDots"></g>`;
+}
+function renderRadarRings(){
+  document.getElementById('radarSvg').innerHTML = baseRadarSvg();
+}
+function appendLogLine(html, warn){
+  const log = document.getElementById('matchLog');
+  const div = document.createElement('div');
+  div.className = 'logline' + (warn ? ' warn' : '');
+  div.innerHTML = '&gt; ' + html;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+function scoreBarHTML(label, val){
+  return `<div class="score-bar"><div class="sb-label">${label}</div><div class="sb-track"><div class="sb-fill" style="width:${Math.max(4,val)}%"></div></div></div>`;
+}
+function generateReason(winner, others){
+  const factors = ['trust','quality','logistics','price'];
+  const factorLabel = {trust:'trust score', quality:'product quality', logistics:'logistics fit', price:'competitive pricing'};
+  const avg = {};
+  factors.forEach(f => { avg[f] = others.reduce((s,o)=>s+o[f],0) / (others.length||1); });
+  const prox = proximityScore(winner.km);
+  const strengths = factors.map(f => ({f, edge: winner[f]-(avg[f]||0)})).sort((a,b)=>b.edge-a.edge);
+  const top = strengths.slice(0,2).map(s=>factorLabel[s.f]);
+  const proxNote = winner.tier==='Local' ? 'strong proximity' : (prox>60 ? 'reasonable proximity' : 'despite the distance');
+  return `Recommended for ${top.join(' and ')}, and ${proxNote}.`;
+}
+let radarDotIdCounter = 0;
+function addRadarDot(tier, colorVar, delayIndex, total){
+  const svg = document.getElementById('radarDots');
+  const r = TIER_RADIUS[tier] - 14 - (delayIndex%2)*8;
+  const angleBase = {Local:-40, Regional:20, National:100, Global:200}[tier] || 0;
+  const angle = (angleBase + delayIndex * (140/Math.max(1,total))) * Math.PI/180;
+  const x = 170 + r*Math.cos(angle);
+  const y = 170 + r*Math.sin(angle);
+  const id = 'dot-'+(radarDotIdCounter++);
+  const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('cx', x); dot.setAttribute('cy', y); dot.setAttribute('r', 5);
+  dot.setAttribute('fill', colorVar); dot.setAttribute('id', id);
+  dot.setAttribute('opacity', '0');
+  dot.style.transition = 'opacity .35s ease, r .35s ease';
+  svg.appendChild(dot);
+  requestAnimationFrame(()=>{ dot.setAttribute('opacity','1'); });
+  return id;
+}
+function highlightWinnerDot(id){
+  const dot = document.getElementById(id);
+  if(!dot) return;
+  dot.setAttribute('fill', '#FF6A2C');
+  dot.setAttribute('r', 7);
+  const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('x1',170); line.setAttribute('y1',170);
+  line.setAttribute('x2', dot.getAttribute('cx')); line.setAttribute('y2', dot.getAttribute('cy'));
+  line.setAttribute('stroke', '#FF6A2C'); line.setAttribute('stroke-width','1'); line.setAttribute('stroke-dasharray','3,3');
+  line.setAttribute('opacity', '0.7');
+  document.getElementById('radarDots').prepend(line);
+}
+async function runAiMatch(){
+  const btn = document.getElementById('runMatchBtn');
+  const catId = document.getElementById('matchCategory').value;
+  const loc = document.getElementById('matchLocation').value || 'your location';
+  const qty = document.getElementById('matchQty').value || 'the requested quantity';
+  const suppliers = MATCH_SUPPLIERS[catId];
+  if(!suppliers) return;
+
+  btn.disabled = true;
+  document.getElementById('matchLog').innerHTML = '';
+  document.getElementById('matchResults').innerHTML = '';
+  renderRadarRings();
+
+  appendLogLine(`Analyzing request: <b>${qty}</b> of <b>${catMap[catId].name}</b>, sourced from <b>${loc}</b>...`);
+  await sleep(500);
+
+  const discovered = [];
+  for(const tier of TIER_ORDER){
+    const inTier = suppliers.filter(s=>s.tier===tier);
+    appendLogLine(`Scanning ${tier.toLowerCase()} suppliers (${TIER_KM_LABEL[tier]})...`);
+    await sleep(550);
+    if(inTier.length===0){
+      appendLogLine(`No qualifying ${tier.toLowerCase()} suppliers found for this spec.`, true);
+    } else {
+      inTier.forEach((s,i) => { s._dotId = addRadarDot(tier, 'var(--ai)', i, inTier.length); discovered.push(s); });
+      appendLogLine(`Found <b>${inTier.length}</b> ${tier.toLowerCase()} candidate${inTier.length>1?'s':''}.`);
+    }
+    await sleep(350);
+    const enoughSoFar = discovered.length >= 2;
+    if(tier!=='Global' && enoughSoFar && tier!=='Local'){
+      // still continue scanning remaining tiers for completeness/transparency of full network view
+    }
+  }
+
+  appendLogLine('Ranking candidates by proximity, trust, price, logistics &amp; quality...');
+  await sleep(500);
+
+  const scored = discovered.map(s => ({...s, score: weightedScore(s)})).sort((a,b)=>b.score-a.score);
+  const top = scored.slice(0,4);
+  appendLogLine(`Recommending best total-cost match: <b>${top[0].name}</b>.`);
+
+  document.getElementById('matchResults').innerHTML = top.map((s,i)=>{
+    const others = scored.filter(o=>o.name!==s.name);
+    const reason = i===0 ? generateReason(s, others) : '';
+    return `
+    <div class="match-result-card ${i===0?'winner':''}">
+      <div class="mr-head">
+        <div><span class="mr-name">${s.name}</span>${i===0?'<span class="winner-tag">AI Recommended</span>':''}</div>
+        <div class="mr-score mono">${s.score.toFixed(1)}</div>
+      </div>
+      <div class="mr-tier">${s.tier} · ${s.km.toLocaleString()} km away</div>
+      ${reason ? `<div class="mr-reason">${reason}</div>` : ''}
+      <div class="mr-bars" style="margin-top:10px;">
+        ${scoreBarHTML('Trust', s.trust)}
+        ${scoreBarHTML('Quality', s.quality)}
+        ${scoreBarHTML('Logistics', s.logistics)}
+        ${scoreBarHTML('Price fit', s.price)}
+        ${scoreBarHTML('Proximity', Math.round(proximityScore(s.km)))}
+      </div>
+    </div>`;
+  }).join('');
+
+  if(top[0] && top[0]._dotId) highlightWinnerDot(top[0]._dotId);
+  btn.disabled = false;
+}
+
+/* ============ VIEW ROUTING ============ */
+function showView(name){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.dataset.view===name));
+  window.scrollTo({top:0, behavior:'instant'});
+  if(name==='marketplace') renderMarketplace();
+}
+function scrollToId(id){ setTimeout(()=>{ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); }, 60); }
+
+/* ============ MARKETPLACE ============ */
+let activeCategoryFilters = new Set();
+function renderFilterCategories(){
+  document.getElementById('filterCategories').innerHTML = CATEGORIES.map(c => `
+    <label><input type="checkbox" value="${c.id}" onchange="toggleCatFilter('${c.id}', this.checked)"> ${c.name}</label>
+  `).join('');
+}
+function toggleCatFilter(id, checked){
+  if(checked) activeCategoryFilters.add(id); else activeCategoryFilters.delete(id);
+  renderMarketplace();
+}
+function filterByCategory(id){
+  showView('marketplace');
+  activeCategoryFilters = new Set([id]);
+  renderFilterCategories();
+  document.querySelectorAll('#filterCategories input').forEach(cb => { cb.checked = cb.value===id; });
+  renderMarketplace();
+}
+function resetFilters(){
+  activeCategoryFilters.clear();
+  document.getElementById('filterVerified').checked = false;
+  document.getElementById('filterLead').value = 60;
+  document.getElementById('leadVal').textContent = 60;
+  document.getElementById('mpSearch').value = '';
+  renderFilterCategories();
+  renderMarketplace();
+}
+function doHeroSearch(e){
+  e.preventDefault();
+  const q = document.getElementById('heroSearch').value;
+  showView('marketplace');
+  document.getElementById('mpSearch').value = q;
+  renderMarketplace();
+}
+function renderMarketplace(){
+  const q = (document.getElementById('mpSearch').value || '').toLowerCase();
+  const verifiedOnly = document.getElementById('filterVerified').checked;
+  const maxLead = parseInt(document.getElementById('filterLead').value);
+  const sort = document.getElementById('mpSort').value;
+  let results = LISTINGS.filter(l => {
+    if(activeCategoryFilters.size && !activeCategoryFilters.has(l.cat)) return false;
+    if(verifiedOnly && !l.verified) return false;
+    if(l.lead > maxLead) return false;
+    if(q && !(l.title.toLowerCase().includes(q) || l.supplier.toLowerCase().includes(q) || catMap[l.cat].name.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  if(sort==='price-asc') results.sort((a,b)=>a.price-b.price);
+  if(sort==='price-desc') results.sort((a,b)=>b.price-a.price);
+  if(sort==='rating') results.sort((a,b)=>b.rating-a.rating);
+  document.getElementById('resultsCount').textContent = results.length + ' listings';
+  document.getElementById('mpGrid').innerHTML = results.length ? results.map(listingCardHTML).join('') :
+    `<div class="empty-state" style="grid-column:1/-1;"><h3>No listings match your filters</h3><p>Try widening your search or clearing a filter.</p></div>`;
+}
+
+/* ============ PRODUCT MODAL ============ */
+function openProductModal(id){
+  const l = LISTINGS.find(x=>x.id===id);
+  const stars = '★★★★★'.slice(0, Math.round(l.rating)) + '☆☆☆☆☆'.slice(0, 5-Math.round(l.rating));
+  const priceDisplay = l.price < 1 ? '$'+l.price.toFixed(3) : '$'+l.price.toLocaleString();
+  document.getElementById('productModalContent').innerHTML = `
+    <div class="modal-head">
+      <h3>${l.title}</h3>
+      <button class="modal-close" onclick="closeModal('modal-product-overlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid; grid-template-columns:220px 1fr; gap:24px;">
+        <div class="listing-thumb" style="background:${l.color}; border-radius:12px; height:200px;">
+          ${l.verified ? '<div class="verified-chip"><svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><use href="#i-check"></use></svg> Verified</div>' : ''}
+          <svg style="width:56px; height:56px;"><use href="#${l.icon}"></use></svg>
+        </div>
+        <div>
+          <div class="listing-cat">${catMap[l.cat].name}</div>
+          <div class="listing-price" style="font-size:22px; margin:6px 0 10px;">${priceDisplay} <span>/ ${l.unit}</span></div>
+          <div class="listing-specs" style="border:none; padding:0; gap:22px; margin-bottom:14px;">
+            <div class="sp">MOQ<b>${l.moq}</b></div>
+            <div class="sp">Lead time<b>${l.lead} days</b></div>
+            <div class="sp">Incoterm<b>${l.incoterm}</b></div>
+          </div>
+          <div class="card" style="padding:14px;">
+            <div style="font-size:13.5px; font-weight:600; margin-bottom:2px;">${l.supplier}</div>
+            <div style="font-size:12.5px; color:var(--steel); margin-bottom:8px;">${l.loc} · <span class="stars">${stars}</span> ${l.rating} · Responds in ~2 hrs</div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-primary btn-sm" style="flex:1" onclick="closeModal('modal-product-overlay'); openRfqModal('${l.title.replace(/'/g,"")}')">Request quote</button>
+              <button class="btn btn-ghost btn-sm" style="flex:1" onclick="showToast('Saved to your suppliers list')">Save supplier</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--steel-line-2);">
+        <h4 style="font-size:13px; text-transform:uppercase; color:var(--steel); font-family:'IBM Plex Mono'; margin-bottom:10px;">Description</h4>
+        <p style="font-size:13.5px; color:var(--text); line-height:1.6; text-transform:none; font-family:'IBM Plex Sans';">Sourced directly from ${l.supplier}, a verified supplier based in ${l.loc}. Standard export documentation, mill/quality test certificates available on request. Custom specifications and private-label packaging available for qualifying order volumes.</p>
+      </div>
+    </div>`;
+  document.getElementById('modal-product-overlay').classList.add('active');
+}
+
+/* ============ MODALS GENERIC ============ */
+function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+function openAuthModal(role){
+  document.getElementById('modal-auth-overlay').classList.add('active');
+  if(role){ const r = document.querySelector(`input[name=authRole][value="${role}"]`); if(r) r.checked = true; }
+}
+function submitAuth(){
+  const role = document.querySelector('input[name=authRole]:checked').value;
+  CURRENT_ROLE = role;
+  document.getElementById('roleLabel').textContent = role.charAt(0).toUpperCase()+role.slice(1);
+  closeModal('modal-auth-overlay');
+  showToast(`Signed in as ${role} (demo)`);
+  if(role==='seller') showView('seller'); else if(role==='enterprise') showToast('Our enterprise team will reach out shortly (demo)'); else showView('buyer');
+}
+function goToDashboard(){
+  if(!CURRENT_ROLE){ openAuthModal(); return; }
+  showView(CURRENT_ROLE==='seller' ? 'seller' : 'buyer');
+}
+
+let rfqPrefill = null;
+function openRfqModal(prefillTitle){
+  document.getElementById('modal-rfq-overlay').classList.add('active');
+  if(prefillTitle){ document.getElementById('rfqDescription').value = 'Request quote for: '+prefillTitle; }
+}
+function submitRfq(){
+  closeModal('modal-rfq-overlay');
+  showToast('RFQ sent to matching verified suppliers');
+  document.getElementById('rfqDescription').value = '';
+  document.getElementById('rfqQty').value = '';
+  document.getElementById('rfqPrice').value = '';
+}
+function openQuoteModal(forWhat){
+  document.getElementById('quoteFor').value = forWhat;
+  document.getElementById('modal-quote-overlay').classList.add('active');
+}
+function submitQuote(){
+  closeModal('modal-quote-overlay');
+  showToast('Quote sent to buyer');
+}
+
+function populateRfqCategorySelect(){
+  document.getElementById('rfqCategory').innerHTML = CATEGORIES.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+/* ============ DASHBOARD TABS ============ */
+function switchDashTab(dash, tab){
+  document.querySelectorAll(`#view-${dash} .dash-tab`).forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll(`#view-${dash} .dash-tab-panel`).forEach(p=>p.classList.remove('active'));
+  document.getElementById(`${dash}-${tab}`).classList.add('active');
+}
+
+function renderRfqTable(){
+  const rows = [
+    {id:'RFQ-4821', product:'Cold-Rolled Steel Coil, 0.8mm', qty:'20 MT', status:'quoted', quotes:3, date:'Jul 8, 2026'},
+    {id:'RFQ-4805', product:'Injection Molding Machine, 250T', qty:'1 unit', status:'open', quotes:1, date:'Jul 5, 2026'},
+    {id:'RFQ-4790', product:'PP Packaging Film, 20 micron', qty:'8 MT', status:'closed', quotes:5, date:'Jun 28, 2026'},
+  ];
+  const pillClass = {open:'status-open', quoted:'status-quoted', closed:'status-closed'};
+  document.getElementById('rfqTableBody').innerHTML = rows.map(r=>`
+    <tr>
+      <td class="mono">${r.id}</td><td>${r.product}</td><td>${r.qty}</td>
+      <td><span class="status-pill ${pillClass[r.status]}">${r.status}</span></td>
+      <td>${r.quotes}</td><td>${r.date}</td>
+    </tr>`).join('');
+}
+
+function renderSavedSuppliers(){
+  const saved = [LISTINGS[0], LISTINGS[9], LISTINGS[6]];
+  document.getElementById('savedSuppliersGrid').innerHTML = saved.map(l => `
+    <div class="card">
+      <div style="display:flex; gap:12px; align-items:center; margin-bottom:10px;">
+        <div class="cat-icon" style="background:${l.color}; width:40px; height:40px;"><svg style="width:20px;height:20px;"><use href="#${l.icon}"></use></svg></div>
+        <div><div style="font-weight:600; font-size:14px;">${l.supplier}</div><div style="font-size:12px; color:var(--steel);">${l.loc}</div></div>
+      </div>
+      <div style="font-size:12.5px; color:var(--steel); margin-bottom:10px;">Specializes in ${catMap[l.cat].name}</div>
+      <button class="btn btn-ghost btn-sm btn-block" onclick="openRfqModal('${l.supplier}')">Send new RFQ</button>
+    </div>`).join('');
+}
+
+function renderSellerListings(){
+  const rows = LISTINGS.slice(0,6).map((l,i)=>({l, status: i===2?'paused':'active', views: Math.floor(200+Math.random()*900)}));
+  document.getElementById('sellerListingsBody').innerHTML = rows.map(r=>`
+    <tr>
+      <td>${r.l.title}</td><td>${catMap[r.l.cat].name}</td><td class="mono">$${r.l.price}/${r.l.unit}</td>
+      <td><span class="status-pill ${r.status==='active'?'status-delivered':'status-closed'}">${r.status}</span></td>
+      <td>${r.views}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="showToast('Listing updated')">Edit</button></td>
+    </tr>`).join('');
+}
+
+function renderAnalyticsBars(){
+  const data = [{m:'Feb',v:40},{m:'Mar',v:55},{m:'Apr',v:48},{m:'May',v:70},{m:'Jun',v:64},{m:'Jul',v:88}];
+  const max = Math.max(...data.map(d=>d.v));
+  document.getElementById('analyticsBars').innerHTML = data.map(d=>`
+    <div class="bar" style="height:${(d.v/max*100)}%"><span>${d.m}</span></div>`).join('');
+}
+
+/* ============ TOASTS ============ */
+function showToast(msg){
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span class="tdot"></span>${msg}`;
+  wrap.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(), 300); }, 3200);
+}
+
+/* ============ AI COPILOT ============ */
+function openAiDrawer(prefill){
+  document.getElementById('aiDrawer').classList.add('open');
+  document.getElementById('aiScrim').classList.add('active');
+  if(!aiOpenedOnce){
+    aiOpenedOnce = true;
+    addAiMessage('bot', "Hi, I'm the Veyor AI Copilot. I can help you draft RFQ specs, compare supplier quotes, explain trade terms, or suggest negotiation language. What are you sourcing today?");
+  }
+  if(prefill){
+    document.getElementById('aiInput').value = prefill;
+    sendAiMessage();
+  }
+}
+function closeAiDrawer(){
+  document.getElementById('aiDrawer').classList.remove('open');
+  document.getElementById('aiScrim').classList.remove('active');
+}
+function sendAiSuggestion(text){
+  document.getElementById('aiInput').value = text;
+  sendAiMessage();
+}
+function askAiToDraftRfq(){
+  const desc = document.getElementById('rfqDescription').value || 'a procurement item for my business';
+  openAiDrawer(`Help me turn this into a clear, detailed RFQ technical spec: "${desc}"`);
+}
+function addAiMessage(role, html){
+  const wrap = document.getElementById('aiMessages');
+  const div = document.createElement('div');
+  div.className = 'ai-msg ' + (role==='user'?'user':'bot');
+  div.innerHTML = html;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  return div;
+}
+async function sendAiMessage(){
+  const input = document.getElementById('aiInput');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  addAiMessage('user', escapeHtml(text));
+  aiHistory.push({role:'user', content:text});
+  const typingEl = addAiMessage('bot', '<span class="typing-dots"><span></span><span></span><span></span></span>');
+
+  try{
+    if(AI_BACKEND_URL.includes('YOUR-BACKEND-URL')){
+      typingEl.remove();
+      addAiMessage('bot', "The Copilot backend isn't configured yet — set AI_BACKEND_URL at the top of the script to your deployed proxy (see /server in the project README).");
+      return;
+    }
+    const response = await fetch(AI_BACKEND_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: aiHistory })
+    });
+    const data = await response.json();
+    typingEl.remove();
+    if(data && data.text){
+      const textBlock = data.text.trim();
+      aiHistory.push({role:'assistant', content:textBlock});
+      addAiMessage('bot', textBlock.split('\\n').filter(Boolean).map(p=>`<p>${escapeHtml(p)}</p>`).join(''));
+    } else {
+      addAiMessage('bot', "I couldn't generate a response just now — mind trying again?");
+    }
+  } catch(err){
+    typingEl.remove();
+    addAiMessage('bot', "The Copilot's having trouble responding right now. Please try again in a moment.");
+  }
+}
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toggleMobileNav(){
+  const links = document.querySelector('.nav-links');
+  links.style.display = links.style.display==='flex' ? 'none' : 'flex';
+}
+
+/* ============ BOOT ============ */
+renderCategories();
+renderFeatured();
+renderHvFeed();
+renderTicker();
+renderFilterCategories();
+populateRfqCategorySelect();
+populateMatchCategorySelect();
+renderRadarRings();
+renderRfqTable();
+renderSavedSuppliers();
+renderSellerListings();
+renderAnalyticsBars();
+fetchMarketPulse();
+setInterval(fetchMarketPulse, 60000);
+</script>
+</body>
+</html>
